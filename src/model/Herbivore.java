@@ -14,10 +14,10 @@ public class Herbivore extends Animal implements Food {
     @Override
     public void eat(Food food) {
         if (!isAlive) {
-            return;
+            throw new IllegalStateException("Нельзя кормить мертвое животное!");
         }
         if (!(food instanceof Grass)) {
-            return;
+            throw new IllegalArgumentException("Травоядное может есть только траву!");
         }
         Grass grass = (Grass)food;
 

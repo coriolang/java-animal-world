@@ -13,6 +13,9 @@ public class Grass implements Food {
     }
 
     public Grass(int id, String name, float weight) {
+        if (weight <= 0)
+            throw new IllegalArgumentException("Трава не может иметь отрицательную или нулевую массу!");
+
         this.id = id;
         this.name = name;
         this.weight = weight;

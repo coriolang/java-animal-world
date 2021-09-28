@@ -18,14 +18,14 @@ public class Predator extends Animal {
     @Override
     public void eat(Food food) {
         if (!isAlive) {
-            return;
+            throw new IllegalStateException("Нельзя кормить мертвое животное!");
         }
         if (!(food instanceof Herbivore)) {
-            return;
+            throw new IllegalArgumentException("Хищник питается только травоядными!");
         }
         Herbivore herbivore = (Herbivore)food;
         if (!herbivore.isAlive) {
-            return;
+            throw new IllegalArgumentException("Хищник не ест падаль!");
         }
         if (!hunt()) {
             return;

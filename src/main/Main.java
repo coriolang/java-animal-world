@@ -8,32 +8,83 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String world = "World";
+        try {
+            String world = "World";
 
-        System.out.println("Привет, " + world + "!");
+            System.out.println("Привет, " + world + "!");
 
-        Predator fox = new Predator(1, "Fox", 6.5F);
-        Predator wolf = new Predator(2, "Wolf", 12.0F);
-        Herbivore rabbit = new Herbivore(3, "Rabbit", 2.0F);
-        Herbivore deer = new Herbivore(4, "Deer", 12.0F);
-        Grass grass = new Grass(5, "Grass", 200.0F);
+            Predator fox = new Predator(1, "Fox", 6.5F);
+            Predator wolf = new Predator(2, "Wolf", 12.0F);
+            Herbivore rabbit = new Herbivore(3, "Rabbit", 2.0F);
+            Herbivore deer = new Herbivore(4, "Deer", 12.0F);
+            Grass grass = new Grass(5, "Grass", 200.0F);
 
-        System.out.println(fox.getInfo());
-        System.out.println(wolf.getInfo());
-        System.out.println(rabbit.getInfo());
-        System.out.println(deer.getInfo());
-        System.out.println(grass.getInfo());
+            System.out.println(fox.getInfo());
+            System.out.println(wolf.getInfo());
+            System.out.println(rabbit.getInfo());
+            System.out.println(deer.getInfo());
+            System.out.println(grass.getInfo());
 
-        rabbit.eat(grass);
-        System.out.println("\n" + rabbit.getInfo());
-        System.out.println(grass.getInfo());
+            rabbit.eat(grass);
+            System.out.println("\n" + rabbit.getInfo());
+            System.out.println(grass.getInfo());
 
-        wolf.eat(deer);
-        System.out.println("\n" + wolf.getInfo());
-        System.out.println(deer.getInfo());
+            wolf.eat(deer);
+            System.out.println("\n" + wolf.getInfo());
+            System.out.println(deer.getInfo());
 
-        fox.eat(rabbit);
-        System.out.println("\n" + fox.getInfo());
-        System.out.println(rabbit.getInfo());
+            fox.eat(rabbit);
+            System.out.println("\n" + fox.getInfo());
+            System.out.println(rabbit.getInfo());
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            printExceptionMessage(e);
+        }
+
+        try {
+            Predator wolf = new Predator(6, "Wolf", -12.0F);
+            Herbivore rabbit = new Herbivore(15, "Rabbit", 2.0F);
+            wolf.eat(rabbit);
+        } catch (IllegalArgumentException e) { // Масса не может быть отрицательной
+            printExceptionMessage(e);
+        }
+
+        try {
+            Predator fox = new Predator(10, "Fox", 6.0F);
+            fox.die();
+            fox.die();
+        } catch (IllegalStateException e) { // Нельзя убить мертвое
+            printExceptionMessage(e);
+        }
+
+        try {
+            Herbivore rabbit = new Herbivore(7, "Rabbit", 2.0F);
+            Grass grass = new Grass(11, "Grass", 50.0F);
+            rabbit.die();
+            rabbit.eat(grass);
+        } catch (IllegalStateException e) { // Нельзя кормить мертвое
+            printExceptionMessage(e);
+        }
+
+        try {
+            Predator fox = new Predator(12, "Fox", 6.0F);
+            Grass grass = new Grass(13, "Grass", 50.0F);
+            fox.eat(grass);
+        } catch (IllegalArgumentException e) { // Нельзя кормить не своей едой
+            printExceptionMessage(e);
+        }
+
+        try {
+            Predator fox = new Predator(14, "Fox", 6.0F);
+            Herbivore rabbit = new Herbivore(15, "Rabbit", 2.0F);
+            rabbit.die();
+            fox.eat(rabbit);
+        } catch (IllegalArgumentException e) { // Хищник не ест падаль
+            printExceptionMessage(e);
+        }
+    }
+
+    private static void printExceptionMessage(RuntimeException e) {
+        System.out.println(e.getMessage());
+        e.printStackTrace();
     }
 }

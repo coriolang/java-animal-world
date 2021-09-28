@@ -15,6 +15,9 @@ abstract class Animal {
     }
 
     public Animal(int id, String name, float weight) {
+        if (weight <= 0)
+            throw new IllegalArgumentException("Животное не может быть с отрицательной или нулевой массой!");
+
         this.id = id;
         this.name = name;
         this.weight = weight;
@@ -22,8 +25,10 @@ abstract class Animal {
     }
 
     public void die() {
-        if (isAlive)
-            this.isAlive = false;
+        if (!isAlive)
+            throw new IllegalStateException("Нельзя убить мертвое животное!");
+
+        this.isAlive = false;
     }
 
     abstract public void eat(Food food);
