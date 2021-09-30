@@ -21,7 +21,7 @@ public class Herbivore extends Animal implements Food {
         }
         Grass grass = (Grass)food;
 
-        this.weight += 0.5F;
         grass.weight -= 0.5F;
+        this.weight += 0.5F;
     }
 }

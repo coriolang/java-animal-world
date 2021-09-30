@@ -31,8 +31,8 @@ public class Predator extends Animal {
             return;
         }
 
-        this.weight += 2.0F;
         herbivore.weight -= 2.0F;
+        this.weight += 2.0F;
         herbivore.die();
     }
 }

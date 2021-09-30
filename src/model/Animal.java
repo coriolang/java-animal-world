@@ -61,6 +61,9 @@ abstract class Animal {
     }
 
     public void setAlive(boolean alive) {
+        if (!isAlive)
+            throw new IllegalStateException("Нельзя убить мертвое животное!");
+
         isAlive = alive;
     }
 
@@ -69,6 +72,9 @@ abstract class Animal {
     }
 
     public void setWeight(float weight) {
+        if (weight <= 0)
+            throw new IllegalArgumentException("Животное не может быть с отрицательной или нулевой массой!");
+
         this.weight = weight;
     }
 }
