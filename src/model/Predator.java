@@ -1,5 +1,9 @@
 package model;
 
+import exceptions.IllegalCarrionException;
+import exceptions.IllegalFeedingDeadException;
+import exceptions.IllegalFoodException;
+
 public class Predator extends Animal {
 
     public Predator() {
@@ -18,21 +22,21 @@ public class Predator extends Animal {
     @Override
     public void eat(Food food) {
         if (!isAlive) {
-            throw new IllegalStateException("Нельзя кормить мертвое животное!");
+            throw new IllegalFeedingDeadException();
         }
         if (!(food instanceof Herbivore)) {
-            throw new IllegalArgumentException("Хищник питается только травоядными!");
+            throw new IllegalFoodException();
         }
         Herbivore herbivore = (Herbivore)food;
         if (!herbivore.isAlive) {
-            throw new IllegalArgumentException("Хищник не ест падаль!");
+            throw new IllegalCarrionException();
         }
         if (!hunt()) {
             return;
         }
 
-        this.weight += 2.0F;
         herbivore.weight -= 2.0F;
+        this.weight += 2.0F;
         herbivore.die();
     }
 }
