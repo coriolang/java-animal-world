@@ -1,5 +1,6 @@
 package main;
 
+import exceptions.*;
 import model.Grass;
 import model.Herbivore;
 import model.Predator;
@@ -36,7 +37,12 @@ public class Main {
             fox.eat(rabbit);
             System.out.println("\n" + fox.getInfo());
             System.out.println(rabbit.getInfo());
-        } catch (IllegalArgumentException | IllegalStateException e) {
+        } catch (IllegalCarrionException
+                | IllegalDeathException
+                | IllegalFeedingDeadException
+                | IllegalFoodException
+                | IllegalWeightException e) {
+
             printExceptionMessage(e);
         }
 
@@ -44,7 +50,7 @@ public class Main {
             Predator wolf = new Predator(6, "Wolf", -12.0F);
             Herbivore rabbit = new Herbivore(7, "Rabbit", 2.0F);
             wolf.eat(rabbit);
-        } catch (IllegalArgumentException e) { // Масса не может быть отрицательной
+        } catch (IllegalWeightException e) { // Масса не может быть отрицательной
             printExceptionMessage(e);
         }
 
@@ -52,7 +58,7 @@ public class Main {
             Predator fox = new Predator(8, "Fox", 6.0F);
             fox.die();
             fox.die();
-        } catch (IllegalStateException e) { // Нельзя убить мертвое
+        } catch (IllegalDeathException e) { // Нельзя убить мертвое
             printExceptionMessage(e);
         }
 
@@ -61,7 +67,7 @@ public class Main {
             Grass grass = new Grass(10, "Grass", 50.0F);
             rabbit.die();
             rabbit.eat(grass);
-        } catch (IllegalStateException e) { // Нельзя кормить мертвое
+        } catch (IllegalFeedingDeadException e) { // Нельзя кормить мертвое
             printExceptionMessage(e);
         }
 
@@ -69,7 +75,7 @@ public class Main {
             Predator fox = new Predator(11, "Fox", 6.0F);
             Grass grass = new Grass(12, "Grass", 50.0F);
             fox.eat(grass);
-        } catch (IllegalArgumentException e) { // Нельзя кормить не своей едой
+        } catch (IllegalFoodException e) { // Нельзя кормить не своей едой
             printExceptionMessage(e);
         }
 
@@ -78,7 +84,7 @@ public class Main {
             Herbivore rabbit = new Herbivore(14, "Rabbit", 2.0F);
             rabbit.die();
             fox.eat(rabbit);
-        } catch (IllegalArgumentException e) { // Хищник не ест падаль
+        } catch (IllegalCarrionException e) { // Хищник не ест падаль
             printExceptionMessage(e);
         }
     }

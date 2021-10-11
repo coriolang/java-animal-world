@@ -1,5 +1,8 @@
 package model;
 
+import exceptions.IllegalDeathException;
+import exceptions.IllegalWeightException;
+
 abstract class Animal {
 
     protected int id;
@@ -16,7 +19,7 @@ abstract class Animal {
 
     public Animal(int id, String name, float weight) {
         if (weight <= 0)
-            throw new IllegalArgumentException("Животное не может быть с отрицательной или нулевой массой!");
+            throw new IllegalWeightException();
 
         this.id = id;
         this.name = name;
@@ -26,7 +29,7 @@ abstract class Animal {
 
     public void die() {
         if (!isAlive)
-            throw new IllegalStateException("Нельзя убить мертвое животное!");
+            throw new IllegalDeathException();
 
         this.isAlive = false;
     }
@@ -62,7 +65,7 @@ abstract class Animal {
 
     public void setAlive(boolean alive) {
         if (!isAlive)
-            throw new IllegalStateException("Нельзя убить мертвое животное!");
+            throw new IllegalDeathException();
 
         isAlive = alive;
     }
@@ -73,7 +76,7 @@ abstract class Animal {
 
     public void setWeight(float weight) {
         if (weight <= 0)
-            throw new IllegalArgumentException("Животное не может быть с отрицательной или нулевой массой!");
+            throw new IllegalWeightException();
 
         this.weight = weight;
     }

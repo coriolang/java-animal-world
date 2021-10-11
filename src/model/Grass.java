@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.IllegalWeightException;
+
 public class Grass implements Food {
 
     protected int id;
@@ -14,7 +16,7 @@ public class Grass implements Food {
 
     public Grass(int id, String name, float weight) {
         if (weight <= 0)
-            throw new IllegalArgumentException("Трава не может иметь отрицательную или нулевую массу!");
+            throw new IllegalWeightException();
 
         this.id = id;
         this.name = name;
@@ -49,7 +51,7 @@ public class Grass implements Food {
 
     public void setWeight(float weight) {
         if (weight <= 0)
-            throw new IllegalArgumentException("Трава не может иметь отрицательную или нулевую массу!");
+            throw new IllegalWeightException();
 
         this.weight = weight;
     }

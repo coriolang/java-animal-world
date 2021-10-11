@@ -1,5 +1,8 @@
 package model;
 
+import exceptions.IllegalFeedingDeadException;
+import exceptions.IllegalFoodException;
+
 public class Herbivore extends Animal implements Food {
 
     public Herbivore() {
@@ -14,10 +17,10 @@ public class Herbivore extends Animal implements Food {
     @Override
     public void eat(Food food) {
         if (!isAlive) {
-            throw new IllegalStateException("Нельзя кормить мертвое животное!");
+            throw new IllegalFeedingDeadException();
         }
         if (!(food instanceof Grass)) {
-            throw new IllegalArgumentException("Травоядное может есть только траву!");
+            throw new IllegalFoodException();
         }
         Grass grass = (Grass)food;
 
