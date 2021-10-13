@@ -10,8 +10,8 @@ public class Herbivore extends Animal implements Food {
         setName("Default Herbivore");
     }
 
-    public Herbivore(int id, String name, float weight) {
-        super(id, name, weight);
+    public Herbivore(String name, float weight) {
+        super(name, weight);
     }
 
     @Override

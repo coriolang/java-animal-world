@@ -11,8 +11,8 @@ public class Predator extends Animal {
         setName("Default Predator");
     }
 
-    public Predator(int id, String name, float weight) {
-        super(id, name, weight);
+    public Predator(String name, float weight) {
+        super(name, weight);
     }
 
     private boolean hunt() {

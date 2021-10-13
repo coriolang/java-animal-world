@@ -17,11 +17,11 @@ public abstract class Animal {
         this.isAlive = true;
     }
 
-    public Animal(int id, String name, float weight) {
+    public Animal(String name, float weight) {
         if (weight <= 0)
             throw new IllegalWeightException();
 
-        this.id = id;
+        this.id = 0;
         this.name = name;
         this.weight = weight;
         this.isAlive = true;

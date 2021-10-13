@@ -57,6 +57,10 @@ public class Forest {
         return animal; // Метод вернет значение null, если значения с переданным ключом нет
     }
 
+    public Grass findGrassById(int id) {
+        return grasses.get(id); // Метод вернет значение null, если значения с переданным ключом нет
+    }
+
     public HashMap<Integer, Grass> getAllGrasses() {
         return grasses;
     }

@@ -14,11 +14,11 @@ public class Grass implements Food {
         this.weight = 0.0F;
     }
 
-    public Grass(int id, String name, float weight) {
+    public Grass(String name, float weight) {
         if (weight <= 0)
             throw new IllegalWeightException();
 
-        this.id = id;
+        this.id = 0;
         this.name = name;
         this.weight = weight;
     }

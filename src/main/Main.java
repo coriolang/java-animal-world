@@ -1,94 +1,234 @@
 package main;
 
-import exceptions.*;
+import exceptions.IllegalCarrionException;
+import exceptions.IllegalDeathException;
+import exceptions.IllegalFeedingDeadException;
+import exceptions.IllegalFoodException;
+import model.Animal;
 import model.Grass;
 import model.Herbivore;
 import model.Predator;
+import repository.Forest;
+
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main {
 
+    private static Scanner in = new Scanner(System.in);
+
     public static void main(String[] args) {
+        Forest forest = new Forest();
 
-        try {
-            System.out.println("Привет, Java Animal World!");
+        Grass grass = new Grass("Свежая трава", 250.0F);
+        Grass grass2 = new Grass("Зеленая трава", 250.0F);
+        Grass grass3 = new Grass("Вкусная трава", 250.0F);
+        Grass grass4 = new Grass("Высокая трава", 250.0F);
 
-            Predator fox = new Predator(1, "Fox", 6.5F);
-            Predator wolf = new Predator(2, "Wolf", 12.0F);
-            Herbivore rabbit = new Herbivore(3, "Rabbit", 2.0F);
-            Herbivore deer = new Herbivore(4, "Deer", 12.0F);
-            Grass grass = new Grass(5, "Grass", 200.0F);
+        forest.create(grass);
+        forest.create(grass2);
+        forest.create(grass3);
+        forest.create(grass4);
 
-            System.out.println(fox.getInfo());
-            System.out.println(wolf.getInfo());
-            System.out.println(rabbit.getInfo());
-            System.out.println(deer.getInfo());
-            System.out.println(grass.getInfo());
+        Herbivore beaver = new Herbivore("Бобр", 30.0F);
+        Herbivore rabbit = new Herbivore("Кролик", 2.0F);
+        Herbivore horse = new Herbivore("Лошадь", 500.0F);
+        Herbivore deer = new Herbivore("Олень", 400.0F);
 
-            rabbit.eat(grass);
-            System.out.println("\n" + rabbit.getInfo());
-            System.out.println(grass.getInfo());
+        forest.create(beaver);
+        forest.create(rabbit);
+        forest.create(horse);
+        forest.create(deer);
 
-            wolf.eat(deer);
-            System.out.println("\n" + wolf.getInfo());
-            System.out.println(deer.getInfo());
+        Predator wolf = new Predator("Волк", 60.0F);
+        Predator bear = new Predator("Медведь", 200.0F);
 
-            fox.eat(rabbit);
-            System.out.println("\n" + fox.getInfo());
-            System.out.println(rabbit.getInfo());
-        } catch (IllegalCarrionException
-                | IllegalDeathException
-                | IllegalFeedingDeadException
-                | IllegalFoodException
-                | IllegalWeightException e) {
+        forest.create(wolf);
+        forest.create(bear);
 
-            printExceptionMessage(e);
+        System.out.println("Привет, Java Animal World!");
+
+        int selectedMenu = -1;
+
+        while (selectedMenu != 0) {
+            System.out.println("1 - Создать новое животное" +
+                    "\n2 - Убить какое-либо животное" +
+                    "\n3 - Покормить какое-либо животное" +
+                    "\n0 - Завершить");
+
+            selectedMenu = getUserInputInt();
+
+            int selectedAnimal = -1;
+            switch (selectedMenu) {
+                case (1):
+                    System.out.println("1 - Создать травоядное" +
+                            "\n2 - Создать хищника" +
+                            "\n0 - Завершить");
+
+                    selectedMenu = getUserInputInt();
+
+                    String name;
+                    float weight;
+                    switch (selectedMenu) {
+                        case 1:
+                            System.out.println("Следует ввести имя травоядного: ");
+                            name = getUserInputString();
+                            System.out.println("Следует ввести массу травоядного: ");
+                            weight = getUserInputFloat();
+
+                            Herbivore herbivore = new Herbivore(name, weight);
+                            forest.create(herbivore);
+
+                            break;
+                        case 2:
+                            System.out.println("Следует ввести имя хищника: ");
+                            name = getUserInputString();
+                            System.out.println("Следует ввести массу хищника: ");
+                            weight = getUserInputFloat();
+
+                            Predator predator = new Predator(name, weight);
+                            forest.create(predator);
+
+                            break;
+                    }
+
+                    break;
+                case (2):
+                    System.out.println("Следует выбрать жертву по идентификатору!");
+                    printAnimals(forest.getAllLiveAnimals());
+
+                    selectedAnimal = getUserInputInt();
+                    Animal animal = forest.findAnimalById(selectedAnimal);
+
+                    try {
+                        animal.die();
+                        forest.update(animal);
+                    } catch (IllegalDeathException e) {
+                        printExceptionMessage(e);
+                    }
+
+                    break;
+                case (3):
+                    System.out.println("1 - Покормить травоядное" +
+                            "\n2 - Покормить хищника" +
+                            "\n0 - Завершить");
+
+                    selectedMenu = getUserInputInt();
+
+                    int selectedFood = -1;
+                    Animal eater;
+                    switch (selectedMenu) {
+                        case 1:
+                            System.out.println("Следует выбрать животное по идентификатору!");
+                            printHerbivores(forest.getAllLiveHerbivores());
+
+                            selectedAnimal = getUserInputInt();
+
+                            System.out.println("Теперь нужно выбрать еду по идентификатору!");
+                            printGrasses(forest.getAllGrasses());
+
+                            selectedFood = getUserInputInt();
+
+                            eater = forest.findAnimalById(selectedAnimal);
+                            Grass foodGrass = forest.findGrassById(selectedFood);
+
+                            try {
+                                eater.eat(foodGrass);
+                                forest.update(eater);
+                                forest.update(foodGrass);
+                            } catch (IllegalFoodException | IllegalFeedingDeadException e) {
+                                printExceptionMessage(e);
+                            }
+
+                            break;
+                        case 2:
+                            System.out.println("Следует выбрать хищника по идентификатору!");
+                            printPredators(forest.getAllLivePredators());
+
+                            selectedAnimal = getUserInputInt();
+
+                            System.out.println("Теперь нужно выбрать еду по идентификатору!");
+                            printHerbivores(forest.getAllLiveHerbivores());
+
+                            selectedFood = getUserInputInt();
+
+                            eater = forest.findAnimalById(selectedAnimal);
+                            Herbivore food = (Herbivore) forest.findAnimalById(selectedFood);
+
+                            try {
+                                eater.eat(food);
+                                forest.update(eater);
+                                forest.update(food);
+                            } catch (IllegalFoodException | IllegalFeedingDeadException | IllegalCarrionException e) {
+                                printExceptionMessage(e);
+                            }
+
+                            break;
+                    }
+
+                    break;
+            }
         }
 
-        try {
-            Predator wolf = new Predator(6, "Wolf", -12.0F);
-            Herbivore rabbit = new Herbivore(7, "Rabbit", 2.0F);
-            wolf.eat(rabbit);
-        } catch (IllegalWeightException e) { // Масса не может быть отрицательной
-            printExceptionMessage(e);
-        }
-
-        try {
-            Predator fox = new Predator(8, "Fox", 6.0F);
-            fox.die();
-            fox.die();
-        } catch (IllegalDeathException e) { // Нельзя убить мертвое
-            printExceptionMessage(e);
-        }
-
-        try {
-            Herbivore rabbit = new Herbivore(9, "Rabbit", 2.0F);
-            Grass grass = new Grass(10, "Grass", 50.0F);
-            rabbit.die();
-            rabbit.eat(grass);
-        } catch (IllegalFeedingDeadException e) { // Нельзя кормить мертвое
-            printExceptionMessage(e);
-        }
-
-        try {
-            Predator fox = new Predator(11, "Fox", 6.0F);
-            Grass grass = new Grass(12, "Grass", 50.0F);
-            fox.eat(grass);
-        } catch (IllegalFoodException e) { // Нельзя кормить не своей едой
-            printExceptionMessage(e);
-        }
-
-        try {
-            Predator fox = new Predator(13, "Fox", 6.0F);
-            Herbivore rabbit = new Herbivore(14, "Rabbit", 2.0F);
-            rabbit.die();
-            fox.eat(rabbit);
-        } catch (IllegalCarrionException e) { // Хищник не ест падаль
-            printExceptionMessage(e);
-        }
+        in.close();
     }
 
     private static void printExceptionMessage(RuntimeException e) {
         System.out.println(e.getMessage());
         e.printStackTrace();
+    }
+
+    private static int getUserInputInt() {
+        int input = -1;
+
+        try {
+            String tmp = in.nextLine().trim().substring(0, 1);
+            input = Integer.parseInt(tmp);
+        } catch (StringIndexOutOfBoundsException e) {
+            printExceptionMessage(e);
+        }
+
+        return input;
+    }
+
+    private static String getUserInputString() {
+        return in.nextLine().trim();
+    }
+
+    private static float getUserInputFloat() {
+        float input = 0.0F;
+
+        try {
+            String tmp = in.nextLine().trim();
+            input = Float.parseFloat(tmp);
+        } catch (StringIndexOutOfBoundsException e) {
+            printExceptionMessage(e);
+        }
+
+        return input;
+    }
+
+    private static void printAnimals(HashMap<Integer, Animal> animals) {
+        for (Animal animal : animals.values()) {
+            System.out.println(animal.getInfo());
+        }
+    }
+
+    private static void printHerbivores(HashMap<Integer, Herbivore> herbivores) {
+        for (Herbivore herbivore : herbivores.values()) {
+            System.out.println(herbivore.getInfo());
+        }
+    }
+
+    private static void printPredators(HashMap<Integer, Predator> predators) {
+        for (Predator predator : predators.values()) {
+            System.out.println(predator.getInfo());
+        }
+    }
+
+    private static void printGrasses(HashMap<Integer, Grass> grasses) {
+        for (Grass grass : grasses.values()) {
+            System.out.println(grass.getInfo());
+        }
     }
 }
