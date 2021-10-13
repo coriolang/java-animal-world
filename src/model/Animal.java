@@ -3,7 +3,7 @@ package model;
 import exceptions.IllegalDeathException;
 import exceptions.IllegalWeightException;
 
-abstract class Animal {
+public abstract class Animal {
 
     protected int id;
     protected String name;

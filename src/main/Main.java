@@ -10,9 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            String world = "World";
-
-            System.out.println("Привет, " + world + "!");
+            System.out.println("Привет, Java Animal World!");
 
             Predator fox = new Predator(1, "Fox", 6.5F);
             Predator wolf = new Predator(2, "Wolf", 12.0F);
