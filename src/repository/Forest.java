@@ -15,6 +15,21 @@ public class Forest {
 
     private int idCounter = 0;
 
+    public Forest() {
+        create(new Grass("Свежая трава", 250.0F));
+        create(new Grass("Зеленая трава", 250.0F));
+        create(new Grass("Вкусная трава", 250.0F));
+        create(new Grass("Высокая трава", 250.0F));
+
+        create(new Herbivore("Бобр", 30.0F));
+        create(new Herbivore("Кролик", 2.0F));
+        create(new Herbivore("Лошадь", 500.0F));
+        create(new Herbivore("Олень", 400.0F));
+
+        create(new Predator("Волк", 60.0F));
+        create(new Predator("Медведь", 200.0F));
+    }
+
     public void create(Grass grass) {
         idCounter++;
         grass.setId(idCounter);
@@ -35,26 +50,41 @@ public class Forest {
     }
 
     public void update(Grass grass) {
+        if (!grasses.containsValue(grass)) {
+            throw new IllegalArgumentException("В лесу нет нужной травы для обновления!");
+        }
+
         grasses.replace(grass.getId(), grass);
     }
 
     public void update(Animal animal) {
         if (animal instanceof Herbivore herbivore) {
+            if (!herbivores.containsValue(herbivore)) {
+                throw new IllegalArgumentException("В лесу нет нужного травоядного для обновления!");
+            }
+
             herbivores.replace(herbivore.getId(), herbivore);
         } else {
             Predator predator = (Predator) animal;
+
+            if (!predators.containsValue(predator)) {
+                throw new IllegalArgumentException("В лесу нет нужного хищника для обновления!");
+            }
+
             predators.replace(predator.getId(), predator);
         }
     }
 
     public Animal findAnimalById(int id) {
         Animal animal = herbivores.get(id);
+        if (animal != null)
+            return animal;
 
-        if (animal == null) {
-            animal = predators.get(id);
-        }
+        animal = predators.get(id);
+        if (animal != null)
+            return animal;
 
-        return animal; // Метод вернет значение null, если значения с переданным ключом нет
+        return null; // Метод вернет значение null, если значения с переданным ключом нет
     }
 
     public Grass findGrassById(int id) {
@@ -68,12 +98,8 @@ public class Forest {
     public HashMap<Integer, Animal> getAllAnimals() {
         HashMap<Integer, Animal> animals = new HashMap<>();
 
-        for (Herbivore herbivore : herbivores.values()) {
-            animals.put(herbivore.getId(), herbivore);
-        }
-        for (Predator predator : predators.values()) {
-            animals.put(predator.getId(), predator);
-        }
+        animals.putAll(herbivores);
+        animals.putAll(predators);
 
         return animals;
     }
