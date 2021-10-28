@@ -1,15 +1,13 @@
 package main;
 
-import exceptions.IllegalCarrionException;
-import exceptions.IllegalDeathException;
-import exceptions.IllegalFeedingDeadException;
-import exceptions.IllegalFoodException;
+import exceptions.*;
 import model.Animal;
 import model.Grass;
 import model.Herbivore;
 import model.Predator;
 import repository.Forest;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -20,12 +18,18 @@ public class Main {
     public static void main(String[] args) {
         Forest forest = new Forest();
 
+        try {
+            forest.load();
+        } catch (IOException | ClassNotFoundException e) {
+            printExceptionMessage(e);
+        }
+
         System.out.println("Привет, Java Animal World!");
 
         int selectedMenu = -1;
 
         while (selectedMenu != 0) {
-            System.out.println("1 - Создать новое животное" +
+            System.out.println("\n1 - Создать новое животное" +
                     "\n2 - Убить какое-либо животное" +
                     "\n3 - Покормить какое-либо животное" +
                     "\n4 - Список всех животных" +
@@ -44,9 +48,9 @@ public class Main {
             Animal animal;
             switch (selectedMenu) {
                 case (1):
-                    System.out.println("1 - Создать травоядное" +
+                    System.out.println("\n1 - Создать травоядное" +
                             "\n2 - Создать хищника" +
-                            "\n0 - Завершить");
+                            "\n0 - Назад");
 
                     selectedMenu = getUserInputInt();
 
@@ -59,8 +63,12 @@ public class Main {
                             System.out.println("Следует ввести массу травоядного: ");
                             weight = getUserInputFloat();
 
-                            Herbivore herbivore = new Herbivore(name, weight);
-                            forest.create(herbivore);
+                            try {
+                                Herbivore herbivore = new Herbivore(name, weight);
+                                forest.create(herbivore);
+                            } catch (IllegalWeightException e) {
+                                printExceptionMessage(e);
+                            }
 
                             break;
                         case 2:
@@ -69,9 +77,16 @@ public class Main {
                             System.out.println("Следует ввести массу хищника: ");
                             weight = getUserInputFloat();
 
-                            Predator predator = new Predator(name, weight);
-                            forest.create(predator);
+                            try {
+                                Predator predator = new Predator(name, weight);
+                                forest.create(predator);
+                            } catch (IllegalWeightException e) {
+                                printExceptionMessage(e);
+                            }
 
+                            break;
+                        case 0:
+                            selectedMenu = -1;
                             break;
                     }
 
@@ -87,7 +102,7 @@ public class Main {
                         animal.die();
                         forest.update(animal);
 
-                        System.out.println(forest.findAnimalById(selectedAnimal).getInfo());
+                        System.out.println(animal.getInfo());
                     } catch (NullPointerException
                             | IllegalDeathException
                             | IllegalArgumentException e) {
@@ -97,9 +112,9 @@ public class Main {
 
                     break;
                 case (3):
-                    System.out.println("1 - Покормить травоядное" +
+                    System.out.println("\n1 - Покормить травоядное" +
                             "\n2 - Покормить хищника" +
-                            "\n0 - Завершить");
+                            "\n0 - Назад");
 
                     selectedMenu = getUserInputInt();
 
@@ -171,6 +186,9 @@ public class Main {
                             }
 
                             break;
+                        case 0:
+                            selectedMenu = -1;
+                            break;
                     }
 
                     break;
@@ -200,7 +218,9 @@ public class Main {
                     selectedAnimal = getUserInputInt();
 
                     try {
-                        System.out.println(forest.findAnimalById(selectedAnimal).getInfo());
+                        animal = forest.findAnimalById(selectedAnimal);
+
+                        System.out.println(animal.getInfo());
                         System.out.println();
                     } catch (NullPointerException e) {
                         printExceptionMessage(e);
@@ -210,11 +230,17 @@ public class Main {
             }
         }
 
+        try {
+            forest.save();
+        } catch (IOException e) {
+            printExceptionMessage(e);
+        }
+
         in.close();
     }
 
-    private static void printExceptionMessage(RuntimeException e) {
-        System.out.println(e.getMessage());
+    private static void printExceptionMessage(Exception e) {
+        System.out.println(e.getMessage() + "\n");
         e.printStackTrace();
     }
 
@@ -224,7 +250,7 @@ public class Main {
         try {
             String tmp = in.nextLine().trim();
             input = Integer.parseInt(tmp);
-        } catch (StringIndexOutOfBoundsException e) {
+        } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
             printExceptionMessage(e);
         }
 

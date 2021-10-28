@@ -2,7 +2,9 @@ package model;
 
 import exceptions.IllegalWeightException;
 
-public class Grass implements Food {
+import java.io.Serializable;
+
+public class Grass implements Food, Serializable {
 
     protected int id;
     protected String name;

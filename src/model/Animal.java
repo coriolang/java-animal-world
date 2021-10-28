@@ -3,7 +3,9 @@ package model;
 import exceptions.IllegalDeathException;
 import exceptions.IllegalWeightException;
 
-public abstract class Animal {
+import java.io.Serializable;
+
+public abstract class Animal implements Serializable {
 
     protected int id;
     protected String name;

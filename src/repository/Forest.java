@@ -5,6 +5,7 @@ import model.Grass;
 import model.Herbivore;
 import model.Predator;
 
+import java.io.*;
 import java.util.HashMap;
 
 public class Forest {
@@ -15,37 +16,48 @@ public class Forest {
 
     private int idCounter = 0;
 
+    private final String REPOSITORY_FILE = "forest.dat";
+
     public Forest() {
-        create(new Grass("Свежая трава", 250.0F));
-        create(new Grass("Зеленая трава", 250.0F));
-        create(new Grass("Вкусная трава", 250.0F));
-        create(new Grass("Высокая трава", 250.0F));
+        if (!new File(REPOSITORY_FILE).exists()) {
+            create(new Grass("Свежая трава", 250.0F));
+            create(new Grass("Зеленая трава", 250.0F));
+            create(new Grass("Вкусная трава", 250.0F));
+            create(new Grass("Высокая трава", 250.0F));
 
-        create(new Herbivore("Бобр", 30.0F));
-        create(new Herbivore("Кролик", 2.0F));
-        create(new Herbivore("Лошадь", 500.0F));
-        create(new Herbivore("Олень", 400.0F));
+            create(new Herbivore("Бобр", 30.0F));
+            create(new Herbivore("Кролик", 2.0F));
+            create(new Herbivore("Лошадь", 500.0F));
+            create(new Herbivore("Олень", 400.0F));
 
-        create(new Predator("Волк", 60.0F));
-        create(new Predator("Медведь", 200.0F));
+            create(new Predator("Волк", 60.0F));
+            create(new Predator("Медведь", 200.0F));
+        }
     }
 
     public void create(Grass grass) {
         idCounter++;
-        grass.setId(idCounter);
-
-        grasses.put(idCounter, grass);
+        putGrass(idCounter, grass);
     }
 
     public void create(Animal animal) {
         idCounter++;
-        animal.setId(idCounter);
+        putAnimal(idCounter, animal);
+    }
+
+    private void putGrass(int id, Grass grass) {
+        grass.setId(id);
+        grasses.put(id, grass);
+    }
+
+    private void putAnimal(int id, Animal animal) {
+        animal.setId(id);
 
         if (animal instanceof Herbivore herbivore) {
-            herbivores.put(idCounter, herbivore);
+            herbivores.put(id, herbivore);
         } else {
             Predator predator = (Predator) animal;
-            predators.put(idCounter, predator);
+            predators.put(id, predator);
         }
     }
 
@@ -151,5 +163,33 @@ public class Forest {
         }
 
         return liveHerbivore;
+    }
+
+    public void save() throws IOException {
+        try(ObjectOutputStream outputStream =
+                    new ObjectOutputStream(new FileOutputStream(REPOSITORY_FILE))) {
+
+            outputStream.writeObject(grasses);
+            outputStream.writeObject(herbivores);
+            outputStream.writeObject(predators);
+            outputStream.writeInt(idCounter);
+        } catch(IOException e) {
+            throw e;
+        }
+    }
+
+    public void load() throws IOException, ClassNotFoundException {
+        try(ObjectInputStream inputStream =
+                    new ObjectInputStream(new FileInputStream(REPOSITORY_FILE))) {
+
+            grasses = (HashMap<Integer, Grass>) inputStream.readObject();
+            herbivores = (HashMap<Integer, Herbivore>) inputStream.readObject();
+            predators = (HashMap<Integer, Predator>) inputStream.readObject();
+            idCounter = inputStream.readInt();
+        } catch(ClassNotFoundException
+                | IOException e) {
+
+            throw e;
+        }
     }
 }
