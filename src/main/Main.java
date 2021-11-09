@@ -16,13 +16,14 @@ public class Main {
     private static Scanner in = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Forest forest = new Forest();
-
         try {
-            forest.load();
+            Forest.load();
         } catch (IOException | ClassNotFoundException e) {
             printExceptionMessage(e);
+            // return;
         }
+
+        Forest forest = Forest.getInstance();
 
         System.out.println("Привет, Java Animal World!");
 
@@ -231,7 +232,7 @@ public class Main {
         }
 
         try {
-            forest.save();
+            Forest.save();
         } catch (IOException e) {
             printExceptionMessage(e);
         }

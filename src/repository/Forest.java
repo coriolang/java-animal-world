@@ -8,7 +8,9 @@ import model.Predator;
 import java.io.*;
 import java.util.HashMap;
 
-public class Forest {
+public class Forest implements Serializable {
+
+    private static Forest forest = null;
 
     private HashMap<Integer, Grass> grasses = new HashMap<>();
     private HashMap<Integer, Herbivore> herbivores = new HashMap<>();
@@ -16,9 +18,9 @@ public class Forest {
 
     private int idCounter = 0;
 
-    private final String REPOSITORY_FILE = "forest.dat";
+    private static final String REPOSITORY_FILE = "forest.dat";
 
-    public Forest() {
+    private Forest() {
         if (!new File(REPOSITORY_FILE).exists()) {
             create(new Grass("Свежая трава", 250.0F));
             create(new Grass("Зеленая трава", 250.0F));
@@ -35,33 +37,40 @@ public class Forest {
         }
     }
 
+    public static Forest getInstance() {
+        if (forest == null) {
+            forest = new Forest();
+        }
+
+        return forest;
+    }
+
     public void create(Grass grass) {
         idCounter++;
-        putGrass(idCounter, grass);
+        grass.setId(idCounter);
+        putGrass(grass);
     }
 
     public void create(Animal animal) {
         idCounter++;
-        putAnimal(idCounter, animal);
+        animal.setId(idCounter);
+        putAnimal(animal);
     }
 
-    private void putGrass(int id, Grass grass) {
-        grass.setId(id);
-        grasses.put(id, grass);
+    private void putGrass(Grass grass) {
+        grasses.put(grass.getId(), grass);
     }
 
-    private void putAnimal(int id, Animal animal) {
-        animal.setId(id);
-
+    private void putAnimal(Animal animal) {
         if (animal instanceof Herbivore herbivore) {
-            herbivores.put(id, herbivore);
+            herbivores.put(herbivore.getId(), herbivore);
         } else {
             Predator predator = (Predator) animal;
-            predators.put(id, predator);
+            predators.put(predator.getId(), predator);
         }
     }
 
-    public void update(Grass grass) {
+    public void update(Grass grass) throws IllegalArgumentException {
         if (!grasses.containsValue(grass)) {
             throw new IllegalArgumentException("В лесу нет нужной травы для обновления!");
         }
@@ -69,7 +78,7 @@ public class Forest {
         grasses.replace(grass.getId(), grass);
     }
 
-    public void update(Animal animal) {
+    public void update(Animal animal) throws IllegalArgumentException {
         if (animal instanceof Herbivore herbivore) {
             if (!herbivores.containsValue(herbivore)) {
                 throw new IllegalArgumentException("В лесу нет нужного травоядного для обновления!");
@@ -165,27 +174,21 @@ public class Forest {
         return liveHerbivore;
     }
 
-    public void save() throws IOException {
+    public static void save() throws IOException {
         try(ObjectOutputStream outputStream =
                     new ObjectOutputStream(new FileOutputStream(REPOSITORY_FILE))) {
 
-            outputStream.writeObject(grasses);
-            outputStream.writeObject(herbivores);
-            outputStream.writeObject(predators);
-            outputStream.writeInt(idCounter);
+            outputStream.writeObject(forest);
         } catch(IOException e) {
             throw e;
         }
     }
 
-    public void load() throws IOException, ClassNotFoundException {
+    public static void load() throws IOException, ClassNotFoundException {
         try(ObjectInputStream inputStream =
                     new ObjectInputStream(new FileInputStream(REPOSITORY_FILE))) {
 
-            grasses = (HashMap<Integer, Grass>) inputStream.readObject();
-            herbivores = (HashMap<Integer, Herbivore>) inputStream.readObject();
-            predators = (HashMap<Integer, Predator>) inputStream.readObject();
-            idCounter = inputStream.readInt();
+            forest = (Forest) inputStream.readObject();
         } catch(ClassNotFoundException
                 | IOException e) {
 
