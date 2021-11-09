@@ -9,19 +9,16 @@ import repository.Forest;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class Main {
 
     private static Scanner in = new Scanner(System.in);
+    private static ResourceBundle settings;
 
     public static void main(String[] args) {
-        try {
-            Forest.load();
-        } catch (IOException | ClassNotFoundException e) {
-            printExceptionMessage(e);
-            // return;
-        }
+        startApp();
 
         Forest forest = Forest.getInstance();
 
@@ -232,12 +229,28 @@ public class Main {
         }
 
         try {
-            Forest.save();
+            Forest.save(settings.getString("REPOSITORY_FILE"));
         } catch (IOException e) {
             printExceptionMessage(e);
         }
 
         in.close();
+    }
+
+    private static void startApp() {
+        settings = ResourceBundle.getBundle("Settings");
+
+        boolean defaultInitialization = settings.getString("DEFAULT_INITIALIZATION").equals("true");
+
+        if (!defaultInitialization) {
+            try {
+                Forest.load(settings.getString("REPOSITORY_FILE"));
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            Forest.defaultInit();
+        }
     }
 
     private static void printExceptionMessage(Exception e) {

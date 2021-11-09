@@ -18,24 +18,7 @@ public class Forest implements Serializable {
 
     private int idCounter = 0;
 
-    private static final String REPOSITORY_FILE = "forest.dat";
-
-    private Forest() {
-        if (!new File(REPOSITORY_FILE).exists()) {
-            create(new Grass("Свежая трава", 250.0F));
-            create(new Grass("Зеленая трава", 250.0F));
-            create(new Grass("Вкусная трава", 250.0F));
-            create(new Grass("Высокая трава", 250.0F));
-
-            create(new Herbivore("Бобр", 30.0F));
-            create(new Herbivore("Кролик", 2.0F));
-            create(new Herbivore("Лошадь", 500.0F));
-            create(new Herbivore("Олень", 400.0F));
-
-            create(new Predator("Волк", 60.0F));
-            create(new Predator("Медведь", 200.0F));
-        }
-    }
+    private Forest() {}
 
     public static Forest getInstance() {
         if (forest == null) {
@@ -174,9 +157,9 @@ public class Forest implements Serializable {
         return liveHerbivore;
     }
 
-    public static void save() throws IOException {
+    public static void save(String repositoryFile) throws IOException {
         try(ObjectOutputStream outputStream =
-                    new ObjectOutputStream(new FileOutputStream(REPOSITORY_FILE))) {
+                    new ObjectOutputStream(new FileOutputStream(repositoryFile))) {
 
             outputStream.writeObject(forest);
         } catch(IOException e) {
@@ -184,9 +167,9 @@ public class Forest implements Serializable {
         }
     }
 
-    public static void load() throws IOException, ClassNotFoundException {
+    public static void load(String repositoryFile) throws IOException, ClassNotFoundException {
         try(ObjectInputStream inputStream =
-                    new ObjectInputStream(new FileInputStream(REPOSITORY_FILE))) {
+                    new ObjectInputStream(new FileInputStream(repositoryFile))) {
 
             forest = (Forest) inputStream.readObject();
         } catch(ClassNotFoundException
@@ -194,5 +177,20 @@ public class Forest implements Serializable {
 
             throw e;
         }
+    }
+
+    public static void defaultInit() {
+        forest.create(new Grass("Свежая трава", 250.0F));
+        forest.create(new Grass("Зеленая трава", 250.0F));
+        forest.create(new Grass("Вкусная трава", 250.0F));
+        forest.create(new Grass("Высокая трава", 250.0F));
+
+        forest.create(new Herbivore("Бобр", 30.0F));
+        forest.create(new Herbivore("Кролик", 2.0F));
+        forest.create(new Herbivore("Лошадь", 500.0F));
+        forest.create(new Herbivore("Олень", 400.0F));
+
+        forest.create(new Predator("Волк", 60.0F));
+        forest.create(new Predator("Медведь", 200.0F));
     }
 }
