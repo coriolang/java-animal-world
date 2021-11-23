@@ -27,7 +27,7 @@ public class Main {
         int selectedMenu = -1;
 
         while (selectedMenu != 0) {
-            System.out.println("\n1 - Создать новое животное" +
+            System.out.println("\n1 - Создать" +
                     "\n2 - Убить какое-либо животное" +
                     "\n3 - Покормить какое-либо животное" +
                     "\n4 - Список всех животных" +
@@ -48,6 +48,7 @@ public class Main {
                 case (1):
                     System.out.println("\n1 - Создать травоядное" +
                             "\n2 - Создать хищника" +
+                            "\n3 - Создать траву" +
                             "\n0 - Назад");
 
                     selectedMenu = getUserInputInt();
@@ -78,6 +79,20 @@ public class Main {
                             try {
                                 Predator predator = new Predator(name, weight);
                                 forest.create(predator);
+                            } catch (IllegalWeightException e) {
+                                printExceptionMessage(e);
+                            }
+
+                            break;
+                        case 3:
+                            System.out.println("Следует ввести название травы: ");
+                            name = getUserInputString();
+                            System.out.println("Следует ввести массу травы: ");
+                            weight = getUserInputFloat();
+
+                            try {
+                                Grass grass = new Grass(name, weight);
+                                forest.create(grass);
                             } catch (IllegalWeightException e) {
                                 printExceptionMessage(e);
                             }
