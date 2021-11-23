@@ -4,6 +4,7 @@ import model.Animal;
 import model.Grass;
 import model.Herbivore;
 import model.Predator;
+import resources.Resources;
 
 import java.io.*;
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class Forest implements Serializable {
 
     public void update(Grass grass) throws IllegalArgumentException {
         if (!grasses.containsValue(grass)) {
-            throw new IllegalArgumentException("В лесу нет нужной травы для обновления!");
+            throw new IllegalArgumentException(Resources.getStrings().getString("GRASS_NOT_EXISTS"));
         }
 
         grasses.replace(grass.getId(), grass);
@@ -64,7 +65,7 @@ public class Forest implements Serializable {
     public void update(Animal animal) throws IllegalArgumentException {
         if (animal instanceof Herbivore herbivore) {
             if (!herbivores.containsValue(herbivore)) {
-                throw new IllegalArgumentException("В лесу нет нужного травоядного для обновления!");
+                throw new IllegalArgumentException(Resources.getStrings().getString("HERB_NOT_EXISTS"));
             }
 
             herbivores.replace(herbivore.getId(), herbivore);
@@ -72,7 +73,7 @@ public class Forest implements Serializable {
             Predator predator = (Predator) animal;
 
             if (!predators.containsValue(predator)) {
-                throw new IllegalArgumentException("В лесу нет нужного хищника для обновления!");
+                throw new IllegalArgumentException(Resources.getStrings().getString("PREDATOR_NOT_EXISTS"));
             }
 
             predators.replace(predator.getId(), predator);

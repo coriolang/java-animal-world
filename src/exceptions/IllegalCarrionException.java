@@ -1,8 +1,10 @@
 package exceptions;
 
+import resources.Resources;
+
 public class IllegalCarrionException extends RuntimeException {
 
-    public static final String DEFAULT_MESSAGE = "Хищник не ест падаль!";
+    public static final String DEFAULT_MESSAGE = Resources.getStrings().getString("CARRION_EXCEPTION");
 
     public IllegalCarrionException() {
         super(DEFAULT_MESSAGE);

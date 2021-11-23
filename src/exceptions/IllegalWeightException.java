@@ -1,8 +1,10 @@
 package exceptions;
 
+import resources.Resources;
+
 public class IllegalWeightException extends RuntimeException {
 
-    public static final String DEFAULT_MESSAGE = "Масса не может быть отрицательной или нулевой!";
+    public static final String DEFAULT_MESSAGE = Resources.getStrings().getString("WEIGHT_EXCEPTION");
 
     public IllegalWeightException() {
         super(DEFAULT_MESSAGE);

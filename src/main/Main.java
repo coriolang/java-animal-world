@@ -6,39 +6,26 @@ import model.Grass;
 import model.Herbivore;
 import model.Predator;
 import repository.Forest;
+import resources.Resources;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
     private static Scanner in = new Scanner(System.in);
-    private static ResourceBundle settings;
 
     public static void main(String[] args) {
         startApp();
 
         Forest forest = Forest.getInstance();
 
-        System.out.println("Привет, Java Animal World!");
+        System.out.println(Resources.getStrings().getString("HELLO_WORLD"));
 
         int selectedMenu = -1;
 
         while (selectedMenu != 0) {
-            System.out.println("\n1 - Создать" +
-                    "\n2 - Убить какое-либо животное" +
-                    "\n3 - Покормить какое-либо животное" +
-                    "\n4 - Список всех животных" +
-                    "\n5 - Список всех травоядных" +
-                    "\n6 - Список всех хищников" +
-                    "\n7 - Список всей травы" +
-                    "\n8 - Список всех живых животных" +
-                    "\n9 - Список всех живых травоядных" +
-                    "\n10 - Список всех живых хищников" +
-                    "\n11 - Информация о выбранном животном" +
-                    "\n0 - Завершить");
+            System.out.println(Resources.getStrings().getString("MAIN_MENU"));
 
             selectedMenu = getUserInputInt();
 
@@ -46,10 +33,7 @@ public class Main {
             Animal animal;
             switch (selectedMenu) {
                 case (1):
-                    System.out.println("\n1 - Создать травоядное" +
-                            "\n2 - Создать хищника" +
-                            "\n3 - Создать траву" +
-                            "\n0 - Назад");
+                    System.out.println(Resources.getStrings().getString("CREATE_MENU"));
 
                     selectedMenu = getUserInputInt();
 
@@ -57,9 +41,9 @@ public class Main {
                     float weight;
                     switch (selectedMenu) {
                         case 1:
-                            System.out.println("Следует ввести имя травоядного: ");
+                            System.out.println(Resources.getStrings().getString("ENTER_HERB_NAME"));
                             name = getUserInputString();
-                            System.out.println("Следует ввести массу травоядного: ");
+                            System.out.println(Resources.getStrings().getString("ENTER_HERB_WEIGHT"));
                             weight = getUserInputFloat();
 
                             try {
@@ -71,9 +55,9 @@ public class Main {
 
                             break;
                         case 2:
-                            System.out.println("Следует ввести имя хищника: ");
+                            System.out.println(Resources.getStrings().getString("ENTER_PRED_NAME"));
                             name = getUserInputString();
-                            System.out.println("Следует ввести массу хищника: ");
+                            System.out.println(Resources.getStrings().getString("ENTER_PRED_WEIGHT"));
                             weight = getUserInputFloat();
 
                             try {
@@ -85,9 +69,9 @@ public class Main {
 
                             break;
                         case 3:
-                            System.out.println("Следует ввести название травы: ");
+                            System.out.println(Resources.getStrings().getString("ENTER_GRASS_NAME"));
                             name = getUserInputString();
-                            System.out.println("Следует ввести массу травы: ");
+                            System.out.println(Resources.getStrings().getString("ENTER_GRASS_WEIGHT"));
                             weight = getUserInputFloat();
 
                             try {
@@ -105,7 +89,7 @@ public class Main {
 
                     break;
                 case (2):
-                    System.out.println("Следует выбрать жертву по идентификатору!");
+                    System.out.println(Resources.getStrings().getString("SELECT_ANIMAL_TO_KILL"));
                     printAnimals(forest.getAllLiveAnimals());
 
                     selectedAnimal = getUserInputInt();
@@ -125,9 +109,7 @@ public class Main {
 
                     break;
                 case (3):
-                    System.out.println("\n1 - Покормить травоядное" +
-                            "\n2 - Покормить хищника" +
-                            "\n0 - Назад");
+                    System.out.println(Resources.getStrings().getString("FEED_MENU"));
 
                     selectedMenu = getUserInputInt();
 
@@ -135,12 +117,12 @@ public class Main {
                     Animal eater;
                     switch (selectedMenu) {
                         case 1:
-                            System.out.println("Следует выбрать животное по идентификатору!");
+                            System.out.println(Resources.getStrings().getString("SELECT_HERB"));
                             printHerbivores(forest.getAllLiveHerbivores());
 
                             selectedAnimal = getUserInputInt();
 
-                            System.out.println("Теперь нужно выбрать еду по идентификатору!");
+                            System.out.println(Resources.getStrings().getString("SELECT_GRASS"));
                             printGrasses(forest.getAllGrasses());
 
                             selectedFood = getUserInputInt();
@@ -167,12 +149,12 @@ public class Main {
 
                             break;
                         case 2:
-                            System.out.println("Следует выбрать хищника по идентификатору!");
+                            System.out.println(Resources.getStrings().getString("SELECT_PREDATOR"));
                             printPredators(forest.getAllLivePredators());
 
                             selectedAnimal = getUserInputInt();
 
-                            System.out.println("Теперь нужно выбрать еду по идентификатору!");
+                            System.out.println(Resources.getStrings().getString("SELECT_HERB"));
                             printHerbivores(forest.getAllLiveHerbivores());
 
                             selectedFood = getUserInputInt();
@@ -227,7 +209,7 @@ public class Main {
                     printPredators(forest.getAllLivePredators());
                     break;
                 case 11:
-                    System.out.println("Следует ввести идентификатор животного!");
+                    System.out.println(Resources.getStrings().getString("SELECT_ANIMAL"));
                     selectedAnimal = getUserInputInt();
 
                     try {
@@ -244,7 +226,7 @@ public class Main {
         }
 
         try {
-            Forest.save(settings.getString("REPOSITORY_FILE"));
+            Forest.save(Resources.getConfigs().getString("REPOSITORY_FILE"));
         } catch (IOException e) {
             printExceptionMessage(e);
         }
@@ -253,13 +235,11 @@ public class Main {
     }
 
     private static void startApp() {
-        settings = ResourceBundle.getBundle("Settings");
-
-        boolean defaultInitialization = settings.getString("DEFAULT_INITIALIZATION").equals("true");
+        boolean defaultInitialization = Resources.getConfigs().getString("DEFAULT_INITIALIZATION").equals("true");
 
         if (!defaultInitialization) {
             try {
-                Forest.load(settings.getString("REPOSITORY_FILE"));
+                Forest.load(Resources.getConfigs().getString("REPOSITORY_FILE"));
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println(e.getMessage());
             }
