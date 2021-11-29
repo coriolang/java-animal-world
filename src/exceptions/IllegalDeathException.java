@@ -1,10 +1,10 @@
 package exceptions;
 
-import resources.Resources;
+import main.Main;
 
 public class IllegalDeathException extends RuntimeException {
 
-    public static final String DEFAULT_MESSAGE = Resources.getStrings().getString("DEATH_EXCEPTION");
+    public static final String DEFAULT_MESSAGE = Main.stringResources.getString("DEATH_EXCEPTION");
 
     public IllegalDeathException() {
         super(DEFAULT_MESSAGE);

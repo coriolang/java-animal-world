@@ -6,26 +6,40 @@ import model.Grass;
 import model.Herbivore;
 import model.Predator;
 import repository.Forest;
-import resources.Resources;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.FileSystems;
 import java.util.*;
 
 public class Main {
 
+    private static final String CONFIGS_FILE = FileSystems.getDefault()
+            .getPath("src", "resources", "configs.properties").toString();
+
+    private static Properties properties;
+    private static int iniType;
+    private static String repositoryFile;
+
+    public static ResourceBundle stringResources;
+
     private static Scanner in = new Scanner(System.in);
 
     public static void main(String[] args) {
-        startApp();
+        try {
+            startApp();
+        } catch (FileNotFoundException e) {
+            System.out.println("File with configs not found!");
+            return;
+        }
 
         Forest forest = Forest.getInstance();
 
-        System.out.println(Resources.getStrings().getString("HELLO_WORLD"));
+        System.out.println(stringResources.getString("HELLO_WORLD"));
 
         int selectedMenu = -1;
 
         while (selectedMenu != 0) {
-            System.out.println(Resources.getStrings().getString("MAIN_MENU"));
+            System.out.println(stringResources.getString("MAIN_MENU"));
 
             selectedMenu = getUserInputInt();
 
@@ -33,7 +47,7 @@ public class Main {
             Animal animal;
             switch (selectedMenu) {
                 case (1):
-                    System.out.println(Resources.getStrings().getString("CREATE_MENU"));
+                    System.out.println(stringResources.getString("CREATE_MENU"));
 
                     selectedMenu = getUserInputInt();
 
@@ -41,9 +55,9 @@ public class Main {
                     float weight;
                     switch (selectedMenu) {
                         case 1:
-                            System.out.println(Resources.getStrings().getString("ENTER_HERB_NAME"));
+                            System.out.println(stringResources.getString("ENTER_HERB_NAME"));
                             name = getUserInputString();
-                            System.out.println(Resources.getStrings().getString("ENTER_HERB_WEIGHT"));
+                            System.out.println(stringResources.getString("ENTER_HERB_WEIGHT"));
                             weight = getUserInputFloat();
 
                             try {
@@ -55,9 +69,9 @@ public class Main {
 
                             break;
                         case 2:
-                            System.out.println(Resources.getStrings().getString("ENTER_PRED_NAME"));
+                            System.out.println(stringResources.getString("ENTER_PRED_NAME"));
                             name = getUserInputString();
-                            System.out.println(Resources.getStrings().getString("ENTER_PRED_WEIGHT"));
+                            System.out.println(stringResources.getString("ENTER_PRED_WEIGHT"));
                             weight = getUserInputFloat();
 
                             try {
@@ -69,9 +83,9 @@ public class Main {
 
                             break;
                         case 3:
-                            System.out.println(Resources.getStrings().getString("ENTER_GRASS_NAME"));
+                            System.out.println(stringResources.getString("ENTER_GRASS_NAME"));
                             name = getUserInputString();
-                            System.out.println(Resources.getStrings().getString("ENTER_GRASS_WEIGHT"));
+                            System.out.println(stringResources.getString("ENTER_GRASS_WEIGHT"));
                             weight = getUserInputFloat();
 
                             try {
@@ -89,7 +103,7 @@ public class Main {
 
                     break;
                 case (2):
-                    System.out.println(Resources.getStrings().getString("SELECT_ANIMAL_TO_KILL"));
+                    System.out.println(stringResources.getString("SELECT_ANIMAL_TO_KILL"));
                     printAnimals(forest.getAllLiveAnimals());
 
                     selectedAnimal = getUserInputInt();
@@ -109,7 +123,7 @@ public class Main {
 
                     break;
                 case (3):
-                    System.out.println(Resources.getStrings().getString("FEED_MENU"));
+                    System.out.println(stringResources.getString("FEED_MENU"));
 
                     selectedMenu = getUserInputInt();
 
@@ -117,12 +131,12 @@ public class Main {
                     Animal eater;
                     switch (selectedMenu) {
                         case 1:
-                            System.out.println(Resources.getStrings().getString("SELECT_HERB"));
+                            System.out.println(stringResources.getString("SELECT_HERB"));
                             printHerbivores(forest.getAllLiveHerbivores());
 
                             selectedAnimal = getUserInputInt();
 
-                            System.out.println(Resources.getStrings().getString("SELECT_GRASS"));
+                            System.out.println(stringResources.getString("SELECT_GRASS"));
                             printGrasses(forest.getAllGrasses());
 
                             selectedFood = getUserInputInt();
@@ -149,12 +163,12 @@ public class Main {
 
                             break;
                         case 2:
-                            System.out.println(Resources.getStrings().getString("SELECT_PREDATOR"));
+                            System.out.println(stringResources.getString("SELECT_PREDATOR"));
                             printPredators(forest.getAllLivePredators());
 
                             selectedAnimal = getUserInputInt();
 
-                            System.out.println(Resources.getStrings().getString("SELECT_HERB"));
+                            System.out.println(stringResources.getString("SELECT_HERB"));
                             printHerbivores(forest.getAllLiveHerbivores());
 
                             selectedFood = getUserInputInt();
@@ -209,7 +223,7 @@ public class Main {
                     printPredators(forest.getAllLivePredators());
                     break;
                 case 11:
-                    System.out.println(Resources.getStrings().getString("SELECT_ANIMAL"));
+                    System.out.println(stringResources.getString("SELECT_ANIMAL"));
                     selectedAnimal = getUserInputInt();
 
                     try {
@@ -222,11 +236,72 @@ public class Main {
                     }
 
                     break;
+                case 12:
+                    System.out.println(stringResources.getString("SETTINGS_MENU"));
+
+                    selectedMenu = getUserInputInt();
+
+                    switch (selectedMenu) {
+                        case 1:
+                            System.out.println(stringResources.getString("LANGUAGE_MENU"));
+
+                            selectedMenu = getUserInputInt();
+
+                            switch (selectedMenu) {
+                                case 1:
+                                    properties.setProperty("LOCALE", "ru");
+                                    saveConfigs();
+                                    stringResources = ResourceBundle.getBundle(
+                                            "resources.strings",
+                                            new Locale(properties.getProperty("LOCALE"))
+                                    );
+                                    break;
+                                case 2:
+                                    properties.setProperty("LOCALE", "en");
+                                    saveConfigs();
+                                    stringResources = ResourceBundle.getBundle(
+                                            "resources.strings",
+                                            new Locale(properties.getProperty("LOCALE"))
+                                    );
+                                    break;
+                                case 0:
+                                    selectedMenu = -1;
+                                    break;
+                            }
+                            break;
+                        case 2:
+                            System.out.println(stringResources.getString("INITIALIZATION_TYPE_MENU"));
+
+                            selectedMenu = getUserInputInt();
+
+                            switch (selectedMenu) {
+                                case 1:
+                                    properties.setProperty("INITIALIZATION_TYPE", "0");
+                                    saveConfigs();
+                                    break;
+                                case 2:
+                                    properties.setProperty("INITIALIZATION_TYPE", "1");
+                                    saveConfigs();
+                                    break;
+                                case 3:
+                                    properties.setProperty("INITIALIZATION_TYPE", "2");
+                                    saveConfigs();
+                                    break;
+                                case 0:
+                                    selectedMenu = -1;
+                                    break;
+                            }
+                            break;
+                        case 0:
+                            selectedMenu = -1;
+                            break;
+                    }
+                    break;
             }
         }
 
         try {
-            Forest.save(Resources.getConfigs().getString("REPOSITORY_FILE"));
+            Forest.save(repositoryFile);
         } catch (IOException e) {
             printExceptionMessage(e);
         }
@@ -234,17 +309,52 @@ public class Main {
         in.close();
     }
 
-    private static void startApp() {
-        boolean defaultInitialization = Resources.getConfigs().getString("DEFAULT_INITIALIZATION").equals("true");
+    private static void startApp() throws FileNotFoundException {
+        try(FileInputStream fis = new FileInputStream(CONFIGS_FILE)) {
+            properties = new Properties();
+            properties.load(fis);
+        } catch (IOException e) {
+            throw new FileNotFoundException();
+        }
 
-        if (!defaultInitialization) {
-            try {
-                Forest.load(Resources.getConfigs().getString("REPOSITORY_FILE"));
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println(e.getMessage());
-            }
-        } else {
-            Forest.defaultInit();
+        iniType = Integer.parseInt(
+                properties.getProperty("INITIALIZATION_TYPE")
+        );
+        repositoryFile = properties.getProperty("REPOSITORY_FILE");
+
+        stringResources = ResourceBundle.getBundle(
+                "resources.strings",
+                new Locale(properties.getProperty("LOCALE"))
+        );
+
+        switch (iniType) {
+            case 0:
+                Forest.emptyInit();
+                break;
+            case 1:
+                Forest.defaultInit();
+                break;
+            case 2:
+                try {
+                    Forest.load(repositoryFile);
+                } catch (IOException | ClassNotFoundException e) {
+                    if (e instanceof FileNotFoundException) {
+                        System.out.println(stringResources.getString("FILE_NOT_FOUND"));
+                        Forest.defaultInit();
+                    } else {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                break;
+        }
+    }
+
+    private static void saveConfigs() {
+        try(FileOutputStream fos = new FileOutputStream(CONFIGS_FILE)) {
+            properties.store(fos, null);
+            System.out.println(stringResources.getString("CONFIGS_SAVE"));
+        } catch (IOException e) {
+            printExceptionMessage(e);
         }
     }
 
