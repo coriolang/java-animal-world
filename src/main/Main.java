@@ -6,7 +6,7 @@ import model.Grass;
 import model.Herbivore;
 import model.Predator;
 import repository.Forest;
-import view.MainView;
+import view.MainFrame;
 
 import java.io.*;
 import java.nio.file.FileSystems;
@@ -34,7 +34,7 @@ public class Main {
         }
 
         // GUI
-        new MainView(stringResources);
+        new MainFrame(stringResources.getString("APPLICATION_TITLE"));
 
         Forest forest = Forest.getInstance();
 
@@ -423,5 +423,25 @@ public class Main {
             System.out.println(grass.getInfo());
         }
         System.out.println();
+    }
+
+    public static Properties getProperties() {
+        return properties;
+    }
+
+    public static int getIniType() {
+        return iniType;
+    }
+
+    public static String getRepositoryFile() {
+        return repositoryFile;
+    }
+
+    public static ResourceBundle getStringResources() {
+        return stringResources;
+    }
+
+    public static void setStringResources(ResourceBundle stringResources) {
+        Main.stringResources = stringResources;
     }
 }
