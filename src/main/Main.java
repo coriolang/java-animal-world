@@ -6,6 +6,7 @@ import model.Grass;
 import model.Herbivore;
 import model.Predator;
 import repository.Forest;
+import view.MainView;
 
 import java.io.*;
 import java.nio.file.FileSystems;
@@ -31,6 +32,9 @@ public class Main {
             System.out.println("File with configs not found!");
             return;
         }
+
+        // GUI
+        new MainView(stringResources);
 
         Forest forest = Forest.getInstance();
 
