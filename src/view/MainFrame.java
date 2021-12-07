@@ -1,26 +1,11 @@
 package view;
 
-import exceptions.*;
 import main.Main;
-import model.Animal;
-import model.Grass;
-import model.Herbivore;
-import model.Predator;
-import repository.Forest;
+import view.listeners.*;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.util.HashMap;
 
 public class MainFrame extends Frame {
-
-    private final String CONFIGS_FILE = FileSystems.getDefault()
-            .getPath("src", "resources", "configs.properties").toString();
-
-    private Forest forest;
 
     // Panels
     private Panel networkPanel,
@@ -56,7 +41,7 @@ public class MainFrame extends Frame {
 
     // Buttons
     // Config Panel
-    private Button saveConfigButton,
+    private Button applyConfigButton,
     // Main Panel
             createItemButton,
             killAnimalButton,
@@ -79,19 +64,12 @@ public class MainFrame extends Frame {
         // Frame
         super(appTitle);
 
-        forest = Forest.getInstance();
-
         setLayout(null);
         setSize(1280, 720);
         setLocationRelativeTo(null);
         setBackground(Color.RED);
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent event) {
-                closeApp();
-            }
-        });
+        addWindowListener(new CloseWindowListener());
 
         setPanels();
         setLabels();
@@ -131,7 +109,7 @@ public class MainFrame extends Frame {
 
         // Labels
         // Network Panel
-        networkLabel = new Label("Network");
+        networkLabel = new Label(Main.getStringResources().getString("NETWORK_LABEL"));
 
         networkLabel.setBounds(16, 46, 288, 24);
         networkLabel.setFont(robotoBold);
@@ -140,9 +118,9 @@ public class MainFrame extends Frame {
         networkPanel.add(networkLabel);
 
         // Config Panel
-        configLabel = new Label("Config");
-        languageLabel = new Label("Language");
-        initializationLabel = new Label("Initialization Type");
+        configLabel = new Label(Main.getStringResources().getString("CONFIG_LABEL"));
+        languageLabel = new Label(Main.getStringResources().getString("LANGUAGE_LABEL"));
+        initializationLabel = new Label(Main.getStringResources().getString("INITIALIZATION_TYPE_LABEL"));
 
         configLabel.setBounds(16, 16, 288, 24);
         configLabel.setFont(robotoBold);
@@ -157,16 +135,16 @@ public class MainFrame extends Frame {
         configPanel.add(initializationLabel);
 
         // Main Panel
-        mainLabel = new Label("Main");
-        itemTypeLabel = new Label("Animal Type");
-        itemNameLabel = new Label("Animal Name");
-        itemWeightLabel = new Label("Animal Weight");
-        selectAnimalToKillLabel = new Label("Select animal to kill");
-        selectAnimalToFeedLabel = new Label("Select animal to feed");
-        selectFoodLabel = new Label("Select food");
-        selectListLabel = new Label("Select list");
-        selectedListLabel = new Label("Selected list");
-        statusLabel = new Label("Status");
+        mainLabel = new Label(Main.getStringResources().getString("MAIN_LABEL"));
+        itemTypeLabel = new Label(Main.getStringResources().getString("ITEM_TYPE_LABEL"));
+        itemNameLabel = new Label(Main.getStringResources().getString("ITEM_NAME_LABEL"));
+        itemWeightLabel = new Label(Main.getStringResources().getString("ITEM_WEIGHT_LABEL"));
+        selectAnimalToKillLabel = new Label(Main.getStringResources().getString("ANIMAL_TO_KILL_LABEL"));
+        selectAnimalToFeedLabel = new Label(Main.getStringResources().getString("ANIMAL_TO_FEED_LABEL"));
+        selectFoodLabel = new Label(Main.getStringResources().getString("SELECT_FOOD_LABEL"));
+        selectListLabel = new Label(Main.getStringResources().getString("SELECT_LIST_LABEL"));
+        selectedListLabel = new Label(Main.getStringResources().getString("SELECTED_LIST_LABEL"));
+        statusLabel = new Label(Main.getStringResources().getString("STATUS_LABEL"));
 
         mainLabel.setBounds(16, 46, 928, 24);
         mainLabel.setFont(robotoBold);
@@ -211,12 +189,12 @@ public class MainFrame extends Frame {
         languageChoice.setBounds(156, 56, 152, 24);
         initializationChoice.setBounds(156, 96, 152, 24);
 
-        languageChoice.addItem("Russian");
-        languageChoice.addItem("English");
+        languageChoice.addItem(Main.getStringResources().getString("RUSSIAN_LANG_ITEM"));
+        languageChoice.addItem(Main.getStringResources().getString("ENGLISH_LANG_ITEM"));
 
-        initializationChoice.addItem("Empty Initialization");
-        initializationChoice.addItem("Default Initialization");
-        initializationChoice.addItem("Initialization From File");
+        initializationChoice.addItem(Main.getStringResources().getString("EMPTY_INIT_ITEM"));
+        initializationChoice.addItem(Main.getStringResources().getString("DEFAULT_INIT_ITEM"));
+        initializationChoice.addItem(Main.getStringResources().getString("FROM_FILE_INIT_ITEM"));
 
         configPanel.add(languageChoice);
         configPanel.add(initializationChoice);
@@ -228,24 +206,19 @@ public class MainFrame extends Frame {
         itemTypeChoice.setBounds(16, 126, 304, 24);
         listChoice.setBounds(16, 486, 304, 24);
 
-        itemTypeChoice.addItem("Herbivore");
-        itemTypeChoice.addItem("Predator");
-        itemTypeChoice.addItem("Grass");
+        itemTypeChoice.addItem(Main.getStringResources().getString("HERBIVORE_ITEM"));
+        itemTypeChoice.addItem(Main.getStringResources().getString("PREDATOR_ITEM"));
+        itemTypeChoice.addItem(Main.getStringResources().getString("GRASS_ITEM"));
 
-        listChoice.addItem("List of all animals");
-        listChoice.addItem("List of all herbivores");
-        listChoice.addItem("List of all predators");
-        listChoice.addItem("List of all grass");
-        listChoice.addItem("List all living animals");
-        listChoice.addItem("List of all living herbivores");
-        listChoice.addItem("List of all living predators");
+        listChoice.addItem(Main.getStringResources().getString("ALL_ANIMALS_ITEM"));
+        listChoice.addItem(Main.getStringResources().getString("ALL_HERBIVORES_ITEM"));
+        listChoice.addItem(Main.getStringResources().getString("ALL_PREDATORS_ITEM"));
+        listChoice.addItem(Main.getStringResources().getString("ALL_GRASSES_ITEM"));
+        listChoice.addItem(Main.getStringResources().getString("ALL_LIVING_ANIMALS_ITEM"));
+        listChoice.addItem(Main.getStringResources().getString("ALL_LIVING_HERBIVORES_ITEM"));
+        listChoice.addItem(Main.getStringResources().getString("ALL_LIVING_PREDATORS_ITEM"));
 
-        listChoice.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                loadSelectedList();
-            }
-        });
+        listChoice.addItemListener(new ListChoiceListener(this));
 
         mainPanel.add(itemTypeChoice);
         mainPanel.add(listChoice);
@@ -254,47 +227,25 @@ public class MainFrame extends Frame {
     private void setButtons() {
         // Buttons
         // Config Panel
-        saveConfigButton = new Button("Save");
-        saveConfigButton.setBounds(16, 320, 120, 24);
+        applyConfigButton = new Button(Main.getStringResources().getString("APPLY_CONFIG_BUTTON"));
+        applyConfigButton.setBounds(16, 320, 120, 24);
 
-        saveConfigButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveConfig();
-            }
-        });
+        applyConfigButton.addActionListener(new ApplyConfigButtonListener(this));
 
-        configPanel.add(saveConfigButton);
+        configPanel.add(applyConfigButton);
 
         // Main Panel
-        createItemButton = new Button("Create");
-        killAnimalButton = new Button("Kill");
-        feedAnimalButton = new Button("Feed");
+        createItemButton = new Button(Main.getStringResources().getString("CREATE_BUTTON"));
+        killAnimalButton = new Button(Main.getStringResources().getString("KILL_BUTTON"));
+        feedAnimalButton = new Button(Main.getStringResources().getString("FEED_BUTTON"));
 
         createItemButton.setBounds(808, 126, 136, 24);
         killAnimalButton.setBounds(16, 406, 304, 24);
         feedAnimalButton.setBounds(336, 406, 608, 24);
 
-        createItemButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createItem();
-            }
-        });
-
-        killAnimalButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                killAnimal();
-            }
-        });
-
-        feedAnimalButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                feedAnimal();
-            }
-        });
+        createItemButton.addActionListener(new CreateItemButtonListener(this));
+        killAnimalButton.addActionListener(new KillAnimalButtonListener(this));
+        feedAnimalButton.addActionListener(new FeedAnimalButtonListener(this));
 
         mainPanel.add(createItemButton);
         mainPanel.add(killAnimalButton);
@@ -325,14 +276,9 @@ public class MainFrame extends Frame {
         foodList.setBounds(656, 206, 288, 184);
         commonList.setBounds(336, 486, 304, 200);
 
-        updateLiveAnimalsLists();
+        updateLists();
 
-        animalToFeedList.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                loadFoodList();
-            }
-        });
+        animalToFeedList.addItemListener(new AnimalToFeedListListener(this));
 
         mainPanel.add(animalToKillList);
         mainPanel.add(animalToFeedList);
@@ -348,236 +294,83 @@ public class MainFrame extends Frame {
         mainPanel.add(statusTextArea);
     }
 
-    private void closeApp() {
-        //dispose();
-
-        try {
-            Forest.save(Main.getRepositoryFile());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.exit(0);
-    }
-
-    private void loadSelectedList() {
-        commonList.removeAll();
-
-        int selectedListIndex = listChoice.getSelectedIndex();
-        Forest forest = Forest.getInstance();
-
-        HashMap<Integer, Animal> animals;
-        HashMap<Integer, Herbivore> herbivores;
-        HashMap<Integer, Predator> predators;
-
-        switch (selectedListIndex) {
-            case 0:
-                animals = forest.getAllAnimals();
-                for (Animal animal : animals.values()) {
-                    commonList.add(animal.getInfo());
-                }
-                break;
-            case 1:
-                herbivores = forest.getAllHerbivores();
-                for (Herbivore herbivore : herbivores.values()) {
-                    commonList.add(herbivore.getInfo());
-                }
-                break;
-            case 2:
-                predators = forest.getAllPredators();
-                for (Predator predator : predators.values()) {
-                    commonList.add(predator.getInfo());
-                }
-                break;
-            case 3:
-                HashMap<Integer, Grass> grasses = forest.getAllGrasses();
-                for (Grass grass : grasses.values()) {
-                    commonList.add(grass.getInfo());
-                }
-                break;
-            case 4:
-                animals = forest.getAllLiveAnimals();
-                for (Animal animal : animals.values()) {
-                    commonList.add(animal.getInfo());
-                }
-                break;
-            case 5:
-                herbivores = forest.getAllLiveHerbivores();
-                for (Herbivore herbivore : herbivores.values()) {
-                    commonList.add(herbivore.getInfo());
-                }
-                break;
-            case 6:
-                predators = forest.getAllLivePredators();
-                for (Predator predator : predators.values()) {
-                    commonList.add(predator.getInfo());
-                }
-                break;
-        }
-    }
-
-    private void saveConfig() {
-        int selectedLanguageIndex = languageChoice.getSelectedIndex();
-        int selectedInitializationTypeIndex = initializationChoice.getSelectedIndex();
-
-        switch (selectedLanguageIndex) {
-            case 0:
-                Main.getProperties().setProperty("LOCALE", "ru");
-                break;
-            case 1:
-                Main.getProperties().setProperty("LOCALE", "en");
-                break;
-        }
-
-        Main.getProperties().setProperty(
-                "INITIALIZATION_TYPE",
-                String.valueOf(selectedInitializationTypeIndex)
-        );
-
-        try(FileOutputStream fos = new FileOutputStream(CONFIGS_FILE)) {
-            Main.getProperties().store(fos, null);
-            statusTextArea.setText(Main.getStringResources().getString("CONFIGS_SAVE"));
-        } catch (IOException e) {
-            statusTextArea.setText(e.getMessage());
-        }
-    }
-
-    private void createItem() {
-        int selectedItemIndex = itemTypeChoice.getSelectedIndex();
-
-        String name = itemNameTextField.getText();
-        float weight = Float.parseFloat(itemWeightTextField.getText());
-
-        try {
-            switch (selectedItemIndex) {
-                case 0:
-                    Herbivore herbivore = new Herbivore(name, weight);
-                    forest.create(herbivore);
-                    break;
-                case 1:
-                    Predator predator = new Predator(name, weight);
-                    forest.create(predator);
-                    break;
-                case 2:
-                    Grass grass = new Grass(name, weight);
-                    forest.create(grass);
-                    break;
-            }
-        } catch (IllegalWeightException e) {
-            statusTextArea.setText(e.getMessage());
-        }
-
-        updateLiveAnimalsLists();
-    }
-
-    private void killAnimal() {
-        int selectedAnimalIndex = animalToKillList.getSelectedIndex();
-        java.util.List<Animal> animalsList = forest.getAllLiveAnimals().values().stream().toList();
-        Animal selectedAnimal = animalsList.get(selectedAnimalIndex);
-
-        try {
-            selectedAnimal.die();
-            forest.update(selectedAnimal);
-
-            statusTextArea.setText(selectedAnimal.getInfo());
-        } catch (NullPointerException
-                | IllegalDeathException
-                | IllegalArgumentException e) {
-
-            statusTextArea.setText(e.getMessage());
-        }
-
-        updateLiveAnimalsLists();
-    }
-
-    private void feedAnimal() {
-        int selectedAnimalIndex = animalToFeedList.getSelectedIndex();
-        java.util.List<Animal> animalsList = forest.getAllLiveAnimals().values().stream().toList();
-        Animal selectedAnimal = animalsList.get(selectedAnimalIndex);
-
-        if (selectedAnimal instanceof Herbivore herbivore) {
-            int selectedFoodIndex = foodList.getSelectedIndex();
-            java.util.List<Grass> grassesList = forest.getAllGrasses().values().stream().toList();
-            Grass food = grassesList.get(selectedFoodIndex);
-
-            try {
-                herbivore.eat(food);
-
-                forest.update(herbivore);
-                forest.update(food);
-
-                statusTextArea.setText(
-                        food.getInfo() +
-                                "\n" +
-                                herbivore.getInfo()
-                );
-            } catch (NullPointerException
-                    | IllegalArgumentException
-                    | IllegalFoodException
-                    | IllegalFeedingDeadException e) {
-
-                statusTextArea.setText(e.getMessage());
-            }
-        } else if (selectedAnimal instanceof Predator predator) {
-            int selectedFoodIndex = foodList.getSelectedIndex();
-            java.util.List<Herbivore> herbivoresList = forest.getAllLiveHerbivores().values().stream().toList();
-            Herbivore food = herbivoresList.get(selectedFoodIndex);
-
-            try {
-                predator.eat(food);
-
-                forest.update(predator);
-                forest.update(food);
-
-                statusTextArea.setText(
-                        food.getInfo() +
-                                "\n" +
-                                predator.getInfo()
-                );
-            } catch (NullPointerException
-                    | IllegalArgumentException
-                    | IllegalFoodException
-                    | IllegalFeedingDeadException e) {
-
-                statusTextArea.setText(e.getMessage());
-            }
-        }
-
-        updateLiveAnimalsLists();
-        foodList.removeAll();
-    }
-
-    private void loadFoodList() {
-        foodList.removeAll();
-
-        int selectedAnimalIndex = animalToFeedList.getSelectedIndex();
-
-        java.util.List<Animal> animalsList = forest.getAllLiveAnimals().values().stream().toList();
-        Animal animal = animalsList.get(selectedAnimalIndex);
-
-        if (animal instanceof Herbivore) {
-            HashMap<Integer, Grass> grasses = forest.getAllGrasses();
-            for (Grass grass : grasses.values()) {
-                foodList.add(grass.getInfo());
-            }
-        } else if (animal instanceof Predator) {
-            HashMap<Integer, Herbivore> herbivores = forest.getAllLiveHerbivores();
-            for (Herbivore herbivore : herbivores.values()) {
-                foodList.add(herbivore.getInfo());
-            }
-        }
-    }
-
-    private void updateLiveAnimalsLists() {
+    private void updateLists() {
         animalToKillList.removeAll();
         animalToFeedList.removeAll();
+        foodList.removeAll();
         commonList.removeAll();
 
-        HashMap<Integer, Animal> animals = forest.getAllLiveAnimals();
+        String herbivore = "Herbivore ";
+        String predator = "Predator ";
 
-        for (Animal animal : animals.values()) {
-            animalToKillList.add(animal.getInfo());
-            animalToFeedList.add(animal.getInfo());
+        for (int i = 0; i < 12; i++) {
+            if (i % 2 == 0) {
+                animalToKillList.add(herbivore + i);
+                animalToFeedList.add(herbivore + i);
+            } else {
+                animalToKillList.add(predator + i);
+                animalToFeedList.add(predator + i);
+            }
         }
+    }
+
+    public Choice getLanguageChoice() {
+        return languageChoice;
+    }
+
+    public Choice getInitializationChoice() {
+        return initializationChoice;
+    }
+
+    public Choice getItemTypeChoice() {
+        return itemTypeChoice;
+    }
+
+    public Choice getListChoice() {
+        return listChoice;
+    }
+
+    public Button getApplyConfigButton() {
+        return applyConfigButton;
+    }
+
+    public Button getCreateItemButton() {
+        return createItemButton;
+    }
+
+    public Button getKillAnimalButton() {
+        return killAnimalButton;
+    }
+
+    public Button getFeedAnimalButton() {
+        return feedAnimalButton;
+    }
+
+    public TextField getItemNameTextField() {
+        return itemNameTextField;
+    }
+
+    public TextField getItemWeightTextField() {
+        return itemWeightTextField;
+    }
+
+    public List getAnimalToKillList() {
+        return animalToKillList;
+    }
+
+    public List getAnimalToFeedList() {
+        return animalToFeedList;
+    }
+
+    public List getFoodList() {
+        return foodList;
+    }
+
+    public List getCommonList() {
+        return commonList;
+    }
+
+    public TextArea getStatusTextArea() {
+        return statusTextArea;
     }
 }
