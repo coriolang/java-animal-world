@@ -324,7 +324,20 @@ public class Main {
         iniType = Integer.parseInt(
                 properties.getProperty("INITIALIZATION_TYPE")
         );
-        repositoryFile = properties.getProperty("REPOSITORY_FILE");
+
+        String currentOSName = System.getProperty("os.name");
+
+        if (currentOSName.contains("Windows")) {
+            repositoryFile = properties.getProperty("REPOSITORY_FILE_WINDOWS");
+        } else if (currentOSName.contains("Linux")) {
+            repositoryFile = properties.getProperty("REPOSITORY_FILE_LINUX");
+        } else if (currentOSName.contains("Mac")) {
+            repositoryFile = properties.getProperty("REPOSITORY_FILE_MACOS");
+        } else {
+            repositoryFile = FileSystems.getDefault().getPath("forest.dat").toString();
+            iniType = 1;
+            System.out.println("Operating system not defined. Default initialization.");
+        }
 
         stringResources = ResourceBundle.getBundle(
                 "resources.strings",
