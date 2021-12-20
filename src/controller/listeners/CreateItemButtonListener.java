@@ -1,5 +1,6 @@
-package view.listeners;
+package controller.listeners;
 
+import controller.MainController;
 import view.MainFrame;
 
 import java.awt.event.ActionEvent;
@@ -19,6 +20,8 @@ public class CreateItemButtonListener implements ActionListener {
         String name = frame.getItemNameTextField().getText();
         float weight = Float.parseFloat(frame.getItemWeightTextField().getText());
 
-        frame.getStatusTextArea().setText("Created: " + selectedItem + " " + name + " weight = " + weight);
+        String creationStatus = MainController.createItem(selectedItem, name, weight);
+
+        frame.getStatusTextArea().setText(creationStatus);
     }
 }

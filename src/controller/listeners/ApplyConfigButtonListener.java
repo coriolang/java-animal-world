@@ -1,5 +1,6 @@
-package view.listeners;
+package controller.listeners;
 
+import controller.MainController;
 import view.MainFrame;
 
 import java.awt.event.ActionEvent;
@@ -15,6 +16,9 @@ public class ApplyConfigButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.getStatusTextArea().setText("Config applied!");
+        int selectedLanguage = frame.getLanguageChoice().getSelectedIndex();
+        String languageStatus = MainController.applyConfig(selectedLanguage);
+
+        frame.getStatusTextArea().setText(languageStatus);
     }
 }

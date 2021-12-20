@@ -1,7 +1,7 @@
 package view;
 
 import main.Main;
-import view.listeners.*;
+import controller.listeners.*;
 
 import java.awt.*;
 
@@ -19,7 +19,6 @@ public class MainFrame extends Frame {
             mainLabel,
     // Config Panel
             languageLabel,
-            initializationLabel,
     // Main Panel
             itemTypeLabel,
             itemNameLabel,
@@ -34,7 +33,6 @@ public class MainFrame extends Frame {
     // Choices
     // Config Panel
     private Choice languageChoice,
-            initializationChoice,
     // Main Panel
             itemTypeChoice,
             listChoice;
@@ -120,19 +118,15 @@ public class MainFrame extends Frame {
         // Config Panel
         configLabel = new Label(Main.getStringResources().getString("CONFIG_LABEL"));
         languageLabel = new Label(Main.getStringResources().getString("LANGUAGE_LABEL"));
-        initializationLabel = new Label(Main.getStringResources().getString("INITIALIZATION_TYPE_LABEL"));
 
         configLabel.setBounds(16, 16, 288, 24);
         configLabel.setFont(robotoBold);
         configLabel.setBackground(Color.LIGHT_GRAY);
         languageLabel.setBounds(16, 56, 120, 24);
         languageLabel.setBackground(Color.LIGHT_GRAY);
-        initializationLabel.setBounds(16, 96, 120, 24);
-        initializationLabel.setBackground(Color.LIGHT_GRAY);
 
         configPanel.add(configLabel);
         configPanel.add(languageLabel);
-        configPanel.add(initializationLabel);
 
         // Main Panel
         mainLabel = new Label(Main.getStringResources().getString("MAIN_LABEL"));
@@ -184,20 +178,13 @@ public class MainFrame extends Frame {
         // Choices
         // Config Panel
         languageChoice = new Choice();
-        initializationChoice = new Choice();
 
         languageChoice.setBounds(156, 56, 152, 24);
-        initializationChoice.setBounds(156, 96, 152, 24);
 
         languageChoice.addItem(Main.getStringResources().getString("RUSSIAN_LANG_ITEM"));
         languageChoice.addItem(Main.getStringResources().getString("ENGLISH_LANG_ITEM"));
 
-        initializationChoice.addItem(Main.getStringResources().getString("EMPTY_INIT_ITEM"));
-        initializationChoice.addItem(Main.getStringResources().getString("DEFAULT_INIT_ITEM"));
-        initializationChoice.addItem(Main.getStringResources().getString("FROM_FILE_INIT_ITEM"));
-
         configPanel.add(languageChoice);
-        configPanel.add(initializationChoice);
 
         // Main Panel
         itemTypeChoice = new Choice();
@@ -316,10 +303,6 @@ public class MainFrame extends Frame {
 
     public Choice getLanguageChoice() {
         return languageChoice;
-    }
-
-    public Choice getInitializationChoice() {
-        return initializationChoice;
     }
 
     public Choice getItemTypeChoice() {

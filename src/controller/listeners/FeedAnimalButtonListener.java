@@ -1,5 +1,6 @@
-package view.listeners;
+package controller.listeners;
 
+import controller.MainController;
 import view.MainFrame;
 
 import java.awt.event.ActionEvent;
@@ -18,7 +19,8 @@ public class FeedAnimalButtonListener implements ActionListener {
         String selectedAnimal = frame.getAnimalToFeedList().getSelectedItem();
         String selectedFood = frame.getFoodList().getSelectedItem();
 
-        frame.getStatusTextArea().setText("Animal to feed: " + selectedAnimal +
-                "\nFood: " + selectedFood);
+        String feedStatus = MainController.feedAnimal(selectedAnimal, selectedFood);
+
+        frame.getStatusTextArea().setText(feedStatus);
     }
 }

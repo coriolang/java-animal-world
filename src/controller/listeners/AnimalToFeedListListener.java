@@ -1,9 +1,11 @@
-package view.listeners;
+package controller.listeners;
 
+import controller.MainController;
 import view.MainFrame;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 
 public class AnimalToFeedListListener implements ItemListener {
 
@@ -17,16 +19,11 @@ public class AnimalToFeedListListener implements ItemListener {
     public void itemStateChanged(ItemEvent e) {
         frame.getFoodList().removeAll();
 
-        String food;
+        ArrayList<String> foodList = MainController
+                .getFoodList(frame.getAnimalToFeedList().getSelectedItem().contains("Predator"));
 
-        if (frame.getAnimalToFeedList().getSelectedItem().contains("Predator")) {
-            food = "Herbivore ";
-        } else {
-            food = "Grass ";
-        }
-
-        for (int i = 0; i < 10; i++) {
-            frame.getFoodList().add(food + i);
+        for (int i = 0; i < foodList.size(); i++) {
+            frame.getFoodList().add(foodList.get(i));
         }
     }
 }

@@ -1,5 +1,6 @@
-package view.listeners;
+package controller.listeners;
 
+import controller.MainController;
 import view.MainFrame;
 
 import java.awt.event.ActionEvent;
@@ -16,6 +17,8 @@ public class KillAnimalButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String selectedAnimal = frame.getAnimalToKillList().getSelectedItem();
-        frame.getStatusTextArea().setText("Killed: " + selectedAnimal);
+        String murderStatus = MainController.killAnimal(selectedAnimal);
+
+        frame.getStatusTextArea().setText(murderStatus);
     }
 }
