@@ -1,10 +1,10 @@
 package exceptions;
 
-import main.Main;
+import controller.MainController;
 
 public class IllegalCarrionException extends RuntimeException {
 
-    public static final String DEFAULT_MESSAGE = Main.stringResources.getString("CARRION_EXCEPTION");
+    public static final String DEFAULT_MESSAGE = MainController.stringResources.getString("CARRION_EXCEPTION");
 
     public IllegalCarrionException() {
         super(DEFAULT_MESSAGE);

@@ -1,10 +1,10 @@
 package exceptions;
 
-import main.Main;
+import controller.MainController;
 
 public class IllegalDeathException extends RuntimeException {
 
-    public static final String DEFAULT_MESSAGE = Main.stringResources.getString("DEATH_EXCEPTION");
+    public static final String DEFAULT_MESSAGE = MainController.stringResources.getString("DEATH_EXCEPTION");
 
     public IllegalDeathException() {
         super(DEFAULT_MESSAGE);

@@ -1,10 +1,10 @@
 package exceptions;
 
-import main.Main;
+import controller.MainController;
 
 public class IllegalFoodException extends RuntimeException {
 
-    public static final String DEFAULT_MESSAGE = Main.stringResources.getString("FOOD_EXCEPTION");
+    public static final String DEFAULT_MESSAGE = MainController.stringResources.getString("FOOD_EXCEPTION");
 
     public IllegalFoodException() {
         super(DEFAULT_MESSAGE);

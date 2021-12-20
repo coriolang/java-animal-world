@@ -1,6 +1,6 @@
 package view;
 
-import main.Main;
+import controller.MainController;
 import controller.listeners.*;
 
 import java.awt.*;
@@ -67,7 +67,7 @@ public class MainFrame extends Frame {
         setLocationRelativeTo(null);
         setBackground(Color.RED);
 
-        addWindowListener(new CloseWindowListener());
+        addWindowListener(new CloseWindowListener(this));
 
         setPanels();
         setLabels();
@@ -107,7 +107,7 @@ public class MainFrame extends Frame {
 
         // Labels
         // Network Panel
-        networkLabel = new Label(Main.getStringResources().getString("NETWORK_LABEL"));
+        networkLabel = new Label(MainController.stringResources.getString("NETWORK_LABEL"));
 
         networkLabel.setBounds(16, 46, 288, 24);
         networkLabel.setFont(robotoBold);
@@ -116,8 +116,8 @@ public class MainFrame extends Frame {
         networkPanel.add(networkLabel);
 
         // Config Panel
-        configLabel = new Label(Main.getStringResources().getString("CONFIG_LABEL"));
-        languageLabel = new Label(Main.getStringResources().getString("LANGUAGE_LABEL"));
+        configLabel = new Label(MainController.stringResources.getString("CONFIG_LABEL"));
+        languageLabel = new Label(MainController.stringResources.getString("LANGUAGE_LABEL"));
 
         configLabel.setBounds(16, 16, 288, 24);
         configLabel.setFont(robotoBold);
@@ -129,16 +129,16 @@ public class MainFrame extends Frame {
         configPanel.add(languageLabel);
 
         // Main Panel
-        mainLabel = new Label(Main.getStringResources().getString("MAIN_LABEL"));
-        itemTypeLabel = new Label(Main.getStringResources().getString("ITEM_TYPE_LABEL"));
-        itemNameLabel = new Label(Main.getStringResources().getString("ITEM_NAME_LABEL"));
-        itemWeightLabel = new Label(Main.getStringResources().getString("ITEM_WEIGHT_LABEL"));
-        selectAnimalToKillLabel = new Label(Main.getStringResources().getString("ANIMAL_TO_KILL_LABEL"));
-        selectAnimalToFeedLabel = new Label(Main.getStringResources().getString("ANIMAL_TO_FEED_LABEL"));
-        selectFoodLabel = new Label(Main.getStringResources().getString("SELECT_FOOD_LABEL"));
-        selectListLabel = new Label(Main.getStringResources().getString("SELECT_LIST_LABEL"));
-        selectedListLabel = new Label(Main.getStringResources().getString("SELECTED_LIST_LABEL"));
-        statusLabel = new Label(Main.getStringResources().getString("STATUS_LABEL"));
+        mainLabel = new Label(MainController.stringResources.getString("MAIN_LABEL"));
+        itemTypeLabel = new Label(MainController.stringResources.getString("ITEM_TYPE_LABEL"));
+        itemNameLabel = new Label(MainController.stringResources.getString("ITEM_NAME_LABEL"));
+        itemWeightLabel = new Label(MainController.stringResources.getString("ITEM_WEIGHT_LABEL"));
+        selectAnimalToKillLabel = new Label(MainController.stringResources.getString("ANIMAL_TO_KILL_LABEL"));
+        selectAnimalToFeedLabel = new Label(MainController.stringResources.getString("ANIMAL_TO_FEED_LABEL"));
+        selectFoodLabel = new Label(MainController.stringResources.getString("SELECT_FOOD_LABEL"));
+        selectListLabel = new Label(MainController.stringResources.getString("SELECT_LIST_LABEL"));
+        selectedListLabel = new Label(MainController.stringResources.getString("SELECTED_LIST_LABEL"));
+        statusLabel = new Label(MainController.stringResources.getString("STATUS_LABEL"));
 
         mainLabel.setBounds(16, 46, 928, 24);
         mainLabel.setFont(robotoBold);
@@ -181,8 +181,8 @@ public class MainFrame extends Frame {
 
         languageChoice.setBounds(156, 56, 152, 24);
 
-        languageChoice.addItem(Main.getStringResources().getString("RUSSIAN_LANG_ITEM"));
-        languageChoice.addItem(Main.getStringResources().getString("ENGLISH_LANG_ITEM"));
+        languageChoice.addItem(MainController.stringResources.getString("RUSSIAN_LANG_ITEM"));
+        languageChoice.addItem(MainController.stringResources.getString("ENGLISH_LANG_ITEM"));
 
         configPanel.add(languageChoice);
 
@@ -193,17 +193,17 @@ public class MainFrame extends Frame {
         itemTypeChoice.setBounds(16, 126, 304, 24);
         listChoice.setBounds(16, 486, 304, 24);
 
-        itemTypeChoice.addItem(Main.getStringResources().getString("HERBIVORE_ITEM"));
-        itemTypeChoice.addItem(Main.getStringResources().getString("PREDATOR_ITEM"));
-        itemTypeChoice.addItem(Main.getStringResources().getString("GRASS_ITEM"));
+        itemTypeChoice.addItem(MainController.stringResources.getString("HERBIVORE_ITEM"));
+        itemTypeChoice.addItem(MainController.stringResources.getString("PREDATOR_ITEM"));
+        itemTypeChoice.addItem(MainController.stringResources.getString("GRASS_ITEM"));
 
-        listChoice.addItem(Main.getStringResources().getString("ALL_ANIMALS_ITEM"));
-        listChoice.addItem(Main.getStringResources().getString("ALL_HERBIVORES_ITEM"));
-        listChoice.addItem(Main.getStringResources().getString("ALL_PREDATORS_ITEM"));
-        listChoice.addItem(Main.getStringResources().getString("ALL_GRASSES_ITEM"));
-        listChoice.addItem(Main.getStringResources().getString("ALL_LIVING_ANIMALS_ITEM"));
-        listChoice.addItem(Main.getStringResources().getString("ALL_LIVING_HERBIVORES_ITEM"));
-        listChoice.addItem(Main.getStringResources().getString("ALL_LIVING_PREDATORS_ITEM"));
+        listChoice.addItem(MainController.stringResources.getString("ALL_ANIMALS_ITEM"));
+        listChoice.addItem(MainController.stringResources.getString("ALL_HERBIVORES_ITEM"));
+        listChoice.addItem(MainController.stringResources.getString("ALL_PREDATORS_ITEM"));
+        listChoice.addItem(MainController.stringResources.getString("ALL_GRASSES_ITEM"));
+        listChoice.addItem(MainController.stringResources.getString("ALL_LIVING_ANIMALS_ITEM"));
+        listChoice.addItem(MainController.stringResources.getString("ALL_LIVING_HERBIVORES_ITEM"));
+        listChoice.addItem(MainController.stringResources.getString("ALL_LIVING_PREDATORS_ITEM"));
 
         listChoice.addItemListener(new ListChoiceListener(this));
 
@@ -214,7 +214,7 @@ public class MainFrame extends Frame {
     private void setButtons() {
         // Buttons
         // Config Panel
-        applyConfigButton = new Button(Main.getStringResources().getString("APPLY_CONFIG_BUTTON"));
+        applyConfigButton = new Button(MainController.stringResources.getString("APPLY_CONFIG_BUTTON"));
         applyConfigButton.setBounds(16, 320, 120, 24);
 
         applyConfigButton.addActionListener(new ApplyConfigButtonListener(this));
@@ -222,9 +222,9 @@ public class MainFrame extends Frame {
         configPanel.add(applyConfigButton);
 
         // Main Panel
-        createItemButton = new Button(Main.getStringResources().getString("CREATE_BUTTON"));
-        killAnimalButton = new Button(Main.getStringResources().getString("KILL_BUTTON"));
-        feedAnimalButton = new Button(Main.getStringResources().getString("FEED_BUTTON"));
+        createItemButton = new Button(MainController.stringResources.getString("CREATE_BUTTON"));
+        killAnimalButton = new Button(MainController.stringResources.getString("KILL_BUTTON"));
+        feedAnimalButton = new Button(MainController.stringResources.getString("FEED_BUTTON"));
 
         createItemButton.setBounds(808, 126, 136, 24);
         killAnimalButton.setBounds(16, 406, 304, 24);

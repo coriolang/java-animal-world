@@ -1,6 +1,6 @@
 package repository;
 
-import main.Main;
+import controller.MainController;
 import model.Animal;
 import model.Grass;
 import model.Herbivore;
@@ -56,7 +56,7 @@ public class Forest implements Serializable {
 
     public void update(Grass grass) throws IllegalArgumentException {
         if (!grasses.containsValue(grass)) {
-            throw new IllegalArgumentException(Main.stringResources.getString("GRASS_NOT_EXISTS"));
+            throw new IllegalArgumentException(MainController.stringResources.getString("GRASS_NOT_EXISTS"));
         }
 
         grasses.replace(grass.getId(), grass);
@@ -65,7 +65,7 @@ public class Forest implements Serializable {
     public void update(Animal animal) throws IllegalArgumentException {
         if (animal instanceof Herbivore herbivore) {
             if (!herbivores.containsValue(herbivore)) {
-                throw new IllegalArgumentException(Main.stringResources.getString("HERB_NOT_EXISTS"));
+                throw new IllegalArgumentException(MainController.stringResources.getString("HERB_NOT_EXISTS"));
             }
 
             herbivores.replace(herbivore.getId(), herbivore);
@@ -73,7 +73,7 @@ public class Forest implements Serializable {
             Predator predator = (Predator) animal;
 
             if (!predators.containsValue(predator)) {
-                throw new IllegalArgumentException(Main.stringResources.getString("PREDATOR_NOT_EXISTS"));
+                throw new IllegalArgumentException(MainController.stringResources.getString("PREDATOR_NOT_EXISTS"));
             }
 
             predators.replace(predator.getId(), predator);

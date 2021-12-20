@@ -1,10 +1,10 @@
 package exceptions;
 
-import main.Main;
+import controller.MainController;
 
 public class IllegalWeightException extends RuntimeException {
 
-    public static final String DEFAULT_MESSAGE = Main.stringResources.getString("WEIGHT_EXCEPTION");
+    public static final String DEFAULT_MESSAGE = MainController.stringResources.getString("WEIGHT_EXCEPTION");
 
     public IllegalWeightException() {
         super(DEFAULT_MESSAGE);
