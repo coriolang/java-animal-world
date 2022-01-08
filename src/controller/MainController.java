@@ -25,6 +25,10 @@ public class MainController {
     private static int iniType;
     public static String repositoryFile;
 
+    public static final int EMPTY_INIT_MODE = 0;
+    public static final int DEFAULT_INIT_MODE = 1;
+    public static final int FILE_INIT_MODE = 2;
+
     public static ResourceBundle stringResources;
 
     private static Forest forest;
@@ -61,13 +65,13 @@ public class MainController {
         );
 
         switch (iniType) {
-            case 0:
+            case EMPTY_INIT_MODE:
                 Forest.emptyInit();
                 break;
-            case 1:
+            case DEFAULT_INIT_MODE:
                 Forest.defaultInit();
                 break;
-            case 2:
+            case FILE_INIT_MODE:
                 try {
                     Forest.load(repositoryFile);
                 } catch (IOException | ClassNotFoundException e) {
@@ -97,20 +101,22 @@ public class MainController {
 
         if (selectedLanguage == 0) {
             properties.setProperty("LOCALE", "ru");
-            languageStatus = stringResources.getString("SELECTED_RUSSIAN");
         } else if (selectedLanguage == 1) {
             properties.setProperty("LOCALE", "en");
-            languageStatus = stringResources.getString("SELECTED_ENGLISH");
         }
-
-        languageStatus += " " + stringResources.getString("AFTER_RESTART");
 
         saveConfigs();
 
-//        stringResources = ResourceBundle.getBundle(
-//                "resources.strings",
-//                new Locale(properties.getProperty("LOCALE"))
-//        );
+        stringResources = ResourceBundle.getBundle(
+                "resources.strings",
+                new Locale(properties.getProperty("LOCALE"))
+        );
+
+        if (selectedLanguage == 0) {
+            languageStatus = stringResources.getString("SELECTED_RUSSIAN");
+        } else if (selectedLanguage == 1) {
+            languageStatus = stringResources.getString("SELECTED_ENGLISH");
+        }
 
         return languageStatus;
     }

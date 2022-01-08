@@ -26,6 +26,8 @@ public class ApplyConfigButtonListener implements ActionListener {
             languageStatus = ex.getMessage();
         }
 
+        frame.updateStrings();
+
         frame.getStatusTextArea().setText(languageStatus);
     }
 }
