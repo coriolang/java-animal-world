@@ -11,6 +11,7 @@ public class App {
             MainController.startApp();
         } catch (FileNotFoundException e) {
             System.out.println("File with configs not found!");
+            // Или вывести Месседж Бокс с ошибкой
             return;
         }
 

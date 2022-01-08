@@ -22,7 +22,6 @@ public class MainController {
             .getPath("src", "resources", "configs.properties").toString();
 
     private static Properties properties;
-    private static int iniType;
     public static String repositoryFile;
 
     public static final int EMPTY_INIT_MODE = 0;
@@ -41,7 +40,7 @@ public class MainController {
             throw new FileNotFoundException();
         }
 
-        iniType = Integer.parseInt(
+        int iniType = Integer.parseInt(
                 properties.getProperty("INITIALIZATION_TYPE")
         );
 
@@ -86,6 +85,11 @@ public class MainController {
         }
 
         forest = Forest.getInstance();
+    }
+
+    public static void closeApp() throws IOException {
+        Forest.save(MainController.repositoryFile);
+        System.exit(0);
     }
 
     private static void saveConfigs() throws IOException {
@@ -218,11 +222,6 @@ public class MainController {
         String animal = animalList.get(id);
 
         return animal;
-    }
-
-    public static void closeApp() throws IOException {
-        Forest.save(MainController.repositoryFile);
-        System.exit(0);
     }
 
     public static String createItem(String type, String name, float weight) {
