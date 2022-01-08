@@ -15,11 +15,13 @@ public class MainFrame extends Frame {
     // Labels
     // Network Panel
     private Label networkLabel,
-            configLabel,
-            mainLabel,
+            ipAddressLabel,
+            portLabel,
     // Config Panel
+            configLabel,
             languageLabel,
     // Main Panel
+            mainLabel,
             itemTypeLabel,
             itemNameLabel,
             itemWeightLabel,
@@ -38,15 +40,22 @@ public class MainFrame extends Frame {
             listChoice;
 
     // Buttons
+    // Network Panel
+    private Button connectButton,
+            disconnectButton,
     // Config Panel
-    private Button applyConfigButton,
+            applyConfigButton,
     // Main Panel
             createItemButton,
             killAnimalButton,
             feedAnimalButton;
 
     // TextFields
-    private TextField itemNameTextField,
+    // Network Panel
+    private TextField ipAddressTextField,
+            portTextField,
+    // Main Panel
+            itemNameTextField,
             itemWeightTextField;
 
     // Lists
@@ -108,12 +117,20 @@ public class MainFrame extends Frame {
         // Labels
         // Network Panel
         networkLabel = new Label(MainController.stringResources.getString("NETWORK_LABEL"));
+        ipAddressLabel = new Label(MainController.stringResources.getString("IP_ADDRESS_LABEL"));
+        portLabel = new Label(MainController.stringResources.getString("PORT_LABEL"));
 
         networkLabel.setBounds(16, 46, 288, 24);
         networkLabel.setFont(robotoBold);
         networkLabel.setBackground(Color.LIGHT_GRAY);
+        ipAddressLabel.setBounds(16, 86, 288, 24);
+        ipAddressLabel.setBackground(Color.LIGHT_GRAY);
+        portLabel.setBounds(16, 166, 288, 24);
+        portLabel.setBackground(Color.LIGHT_GRAY);
 
         networkPanel.add(networkLabel);
+        networkPanel.add(ipAddressLabel);
+        networkPanel.add(portLabel);
 
         // Config Panel
         configLabel = new Label(MainController.stringResources.getString("CONFIG_LABEL"));
@@ -213,9 +230,22 @@ public class MainFrame extends Frame {
 
     private void setButtons() {
         // Buttons
+        // Network Panel
+        connectButton = new Button(MainController.stringResources.getString("CONNECT_BUTTON"));
+        disconnectButton = new Button(MainController.stringResources.getString("DISCONNECT_BUTTON"));
+
+        connectButton.setBounds(16, 246, 136, 24);
+        disconnectButton.setBounds(168, 246, 136, 24);
+
+        connectButton.addActionListener(new ConnectButtonListener(this));
+        disconnectButton.addActionListener(new DisconnectButtonListener(this));
+
+        networkPanel.add(connectButton);
+        networkPanel.add(disconnectButton);
+
         // Config Panel
         applyConfigButton = new Button(MainController.stringResources.getString("APPLY_CONFIG_BUTTON"));
-        applyConfigButton.setBounds(16, 320, 120, 24);
+        applyConfigButton.setBounds(16, 320, 136, 24);
 
         applyConfigButton.addActionListener(new ApplyConfigButtonListener(this));
 
@@ -241,6 +271,17 @@ public class MainFrame extends Frame {
 
     private void setTextFields() {
         // TextFields
+        // Network Panel
+        ipAddressTextField = new TextField();
+        portTextField = new TextField();
+
+        ipAddressTextField.setBounds(16, 126, 288, 24);
+        portTextField.setBounds(16, 206, 288, 24);
+
+        networkPanel.add(ipAddressTextField);
+        networkPanel.add(portTextField);
+
+        // Main Panel
         itemNameTextField = new TextField();
         itemWeightTextField = new TextField();
 
@@ -305,6 +346,8 @@ public class MainFrame extends Frame {
         // Labels
         // Network Panel
         networkLabel.setText(MainController.stringResources.getString("NETWORK_LABEL"));
+        ipAddressLabel.setText(MainController.stringResources.getString("IP_ADDRESS_LABEL"));
+        portLabel.setText(MainController.stringResources.getString("PORT_LABEL"));
         // Config Panel
         configLabel.setText(MainController.stringResources.getString("CONFIG_LABEL"));
         languageLabel.setText(MainController.stringResources.getString("LANGUAGE_LABEL"));
@@ -341,6 +384,9 @@ public class MainFrame extends Frame {
         listChoice.addItem(MainController.stringResources.getString("ALL_LIVING_PREDATORS_ITEM"));
 
         // Buttons
+        // Network Panel
+        connectButton.setLabel(MainController.stringResources.getString("CONNECT_BUTTON"));
+        disconnectButton.setLabel(MainController.stringResources.getString("DISCONNECT_BUTTON"));
         // Config Panel
         applyConfigButton.setLabel(MainController.stringResources.getString("APPLY_CONFIG_BUTTON"));
         // Main Panel
@@ -375,6 +421,14 @@ public class MainFrame extends Frame {
 
     public Button getFeedAnimalButton() {
         return feedAnimalButton;
+    }
+
+    public Button getConnectButton() {
+        return connectButton;
+    }
+
+    public Button getDisconnectButton() {
+        return disconnectButton;
     }
 
     public TextField getItemNameTextField() {
