@@ -5,7 +5,8 @@ import view.MainFrame;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.HashMap;
 
 public class ListChoiceListener implements ItemListener {
 
@@ -19,11 +20,45 @@ public class ListChoiceListener implements ItemListener {
     public void itemStateChanged(ItemEvent e) {
         frame.getCommonList().removeAll();
 
-        ArrayList<String> list = MainController
-                .getSelectedList(frame.getListChoice().getSelectedItem());
+        HashMap<Integer, String> hashMap = new HashMap<>();
 
-        for (int i = 0; i < list.size(); i++) {
-            frame.getCommonList().add(list.get(i));
+        try {
+            switch (frame.getListChoice().getSelectedIndex()) {
+                case 1:
+                    hashMap = MainController.getAllAnimals();
+                    break;
+                case 2:
+                    hashMap = MainController.getAllHerbivores();
+                    break;
+                case 3:
+                    hashMap = MainController.getAllPredators();
+                    break;
+                case 4:
+                    hashMap = MainController.getAllGrasses();
+                    break;
+                case 5:
+                    hashMap = MainController.getLiveAnimals();
+                    break;
+                case 6:
+                    hashMap = MainController.getLiveHerbivores();
+                    break;
+                case 7:
+                    hashMap = MainController.getLivePredators();
+                    break;
+            }
+        } catch (IOException ex) {
+            frame.getStatusTextArea().setText(ex.getMessage());
+            return;
         }
+
+        for (String item : hashMap.values()) {
+            frame.getCommonList().add(item);
+        }
+
+        frame.getStatusTextArea().setText(
+                MainController.stringResources.getString("SELECTED_LIST")
+                + " "
+                + frame.getListChoice().getSelectedItem()
+        );
     }
 }

@@ -16,7 +16,7 @@ public class MainConsole {
             selectedMenu = ConsoleController.getUserInputInt();
 
             switch (selectedMenu) {
-                case (1):
+                case 1:
                     System.out.println(MainController.stringResources.getString("CREATE_MENU"));
 
                     selectedMenu = ConsoleController.getUserInputInt();
@@ -37,10 +37,10 @@ public class MainConsole {
                     }
 
                     break;
-                case (2):
+                case 2:
                     ConsoleController.killAnimal();
                     break;
-                case (3):
+                case 3:
                     System.out.println(MainController.stringResources.getString("FEED_MENU"));
 
                     selectedMenu = ConsoleController.getUserInputInt();
@@ -59,25 +59,25 @@ public class MainConsole {
 
                     break;
                 case 4:
-                    ConsoleController.printList(MainController.getAllAnimalsList());
+//                    ConsoleController.printList(MainController.getAllAnimalsList());
                     break;
                 case 5:
-                    ConsoleController.printList(MainController.getAllHerbivoresList());
+//                    ConsoleController.printList(MainController.getAllHerbivoresList());
                     break;
                 case 6:
-                    ConsoleController.printList(MainController.getAllPredatorsList());
+//                    ConsoleController.printList(MainController.getAllPredatorsList());
                     break;
                 case 7:
-                    ConsoleController.printList(MainController.getGrassesList());
+//                    ConsoleController.printList(MainController.getGrassesList());
                     break;
                 case 8:
-                    ConsoleController.printList(MainController.getLiveAnimalsList());
+//                    ConsoleController.printList(MainController.getLiveAnimalsList());
                     break;
                 case 9:
-                    ConsoleController.printList(MainController.getLiveHerbivoresList());
+//                    ConsoleController.printList(MainController.getLiveHerbivoresList());
                     break;
                 case 10:
-                    ConsoleController.printList(MainController.getLivePredatorsList());
+//                    ConsoleController.printList(MainController.getLivePredatorsList());
                     break;
                 case 11:
                     ConsoleController.printSelectedAnimal();

@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 
 public class App {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         try {
             MainController.startApp();
         } catch (FileNotFoundException e) {

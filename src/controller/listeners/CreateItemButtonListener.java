@@ -5,6 +5,7 @@ import view.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class CreateItemButtonListener implements ActionListener {
 
@@ -16,11 +17,31 @@ public class CreateItemButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String selectedItem = frame.getItemTypeChoice().getSelectedItem();
-        String name = frame.getItemNameTextField().getText();
-        float weight = Float.parseFloat(frame.getItemWeightTextField().getText());
+        if (frame.getItemNameTextField().getText().isEmpty()
+        || frame.getItemNameTextField().getText().isBlank()
+        || frame.getItemNameTextField().getText().contains("&")) {
 
-        String creationStatus = MainController.createItem(selectedItem, name, weight);
+            frame.getStatusTextArea().setText(MainController.stringResources.getString("INCORRECT_NAME"));
+            return;
+        }
+
+        float weight;
+        try {
+            weight = Float.parseFloat(frame.getItemWeightTextField().getText());
+        } catch (NumberFormatException ex) {
+            frame.getStatusTextArea().setText(MainController.stringResources.getString("INCORRECT_WEIGHT"));
+            return;
+        }
+
+        int selectedItem = frame.getItemTypeChoice().getSelectedIndex();
+        String name = frame.getItemNameTextField().getText();
+
+        String creationStatus = null;
+        try {
+            creationStatus = MainController.create(selectedItem, name, weight);
+        } catch (IOException ex) {
+            creationStatus = ex.getMessage();
+        }
 
         frame.getStatusTextArea().setText(creationStatus);
     }

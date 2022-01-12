@@ -37,6 +37,8 @@ public class MainFrame extends Frame {
     private Choice languageChoice,
     // Main Panel
             itemTypeChoice,
+            animalToKillTypeChoice,
+            animalToFeedTypeChoice,
             listChoice;
 
     // Buttons
@@ -76,7 +78,7 @@ public class MainFrame extends Frame {
         setLocationRelativeTo(null);
         setBackground(Color.RED);
 
-        addWindowListener(new CloseWindowListener(this));
+        addWindowListener(new WindowListener(this));
 
         setPanels();
         setLabels();
@@ -205,15 +207,28 @@ public class MainFrame extends Frame {
 
         // Main Panel
         itemTypeChoice = new Choice();
+        animalToKillTypeChoice = new Choice();
+        animalToFeedTypeChoice = new Choice();
         listChoice = new Choice();
 
         itemTypeChoice.setBounds(16, 126, 304, 24);
+        animalToKillTypeChoice.setBounds(16, 206, 304, 24);
+        animalToFeedTypeChoice.setBounds(336, 206, 304, 24);
         listChoice.setBounds(16, 486, 304, 24);
 
         itemTypeChoice.addItem(MainController.stringResources.getString("HERBIVORE_ITEM"));
         itemTypeChoice.addItem(MainController.stringResources.getString("PREDATOR_ITEM"));
         itemTypeChoice.addItem(MainController.stringResources.getString("GRASS_ITEM"));
 
+        animalToKillTypeChoice.addItem("");
+        animalToKillTypeChoice.addItem(MainController.stringResources.getString("HERBIVORE_ITEM"));
+        animalToKillTypeChoice.addItem(MainController.stringResources.getString("PREDATOR_ITEM"));
+
+        animalToFeedTypeChoice.addItem("");
+        animalToFeedTypeChoice.addItem(MainController.stringResources.getString("HERBIVORE_ITEM"));
+        animalToFeedTypeChoice.addItem(MainController.stringResources.getString("PREDATOR_ITEM"));
+
+        listChoice.addItem("");
         listChoice.addItem(MainController.stringResources.getString("ALL_ANIMALS_ITEM"));
         listChoice.addItem(MainController.stringResources.getString("ALL_HERBIVORES_ITEM"));
         listChoice.addItem(MainController.stringResources.getString("ALL_PREDATORS_ITEM"));
@@ -223,8 +238,12 @@ public class MainFrame extends Frame {
         listChoice.addItem(MainController.stringResources.getString("ALL_LIVING_PREDATORS_ITEM"));
 
         listChoice.addItemListener(new ListChoiceListener(this));
+        animalToKillTypeChoice.addItemListener(new AnimalToKillTypeChoiceListener(this));
+        animalToFeedTypeChoice.addItemListener(new AnimalToFeedTypeChoiceListener(this));
 
         mainPanel.add(itemTypeChoice);
+        mainPanel.add(animalToKillTypeChoice);
+        mainPanel.add(animalToFeedTypeChoice);
         mainPanel.add(listChoice);
     }
 
@@ -299,14 +318,12 @@ public class MainFrame extends Frame {
         foodList = new List();
         commonList = new List();
 
-        animalToKillList.setBounds(16, 206, 304, 184);
-        animalToFeedList.setBounds(336, 206, 304, 184);
+        animalToKillList.setBounds(16, 246, 304, 144);
+        animalToFeedList.setBounds(336, 246, 304, 144);
         foodList.setBounds(656, 206, 288, 184);
         commonList.setBounds(336, 486, 304, 200);
 
 //        updateLists();
-
-        animalToFeedList.addItemListener(new AnimalToFeedListListener(this));
 
         mainPanel.add(animalToKillList);
         mainPanel.add(animalToFeedList);
@@ -374,7 +391,18 @@ public class MainFrame extends Frame {
         itemTypeChoice.addItem(MainController.stringResources.getString("PREDATOR_ITEM"));
         itemTypeChoice.addItem(MainController.stringResources.getString("GRASS_ITEM"));
 
+        animalToKillTypeChoice.removeAll();
+        animalToKillTypeChoice.addItem("");
+        animalToKillTypeChoice.addItem(MainController.stringResources.getString("HERBIVORE_ITEM"));
+        animalToKillTypeChoice.addItem(MainController.stringResources.getString("PREDATOR_ITEM"));
+
+        animalToFeedTypeChoice.removeAll();
+        animalToFeedTypeChoice.addItem("");
+        animalToFeedTypeChoice.addItem(MainController.stringResources.getString("HERBIVORE_ITEM"));
+        animalToFeedTypeChoice.addItem(MainController.stringResources.getString("PREDATOR_ITEM"));
+
         listChoice.removeAll();
+        listChoice.addItem("");
         listChoice.addItem(MainController.stringResources.getString("ALL_ANIMALS_ITEM"));
         listChoice.addItem(MainController.stringResources.getString("ALL_HERBIVORES_ITEM"));
         listChoice.addItem(MainController.stringResources.getString("ALL_PREDATORS_ITEM"));
@@ -401,6 +429,14 @@ public class MainFrame extends Frame {
 
     public Choice getItemTypeChoice() {
         return itemTypeChoice;
+    }
+
+    public Choice getAnimalToKillTypeChoice() {
+        return animalToKillTypeChoice;
+    }
+
+    public Choice getAnimalToFeedTypeChoice() {
+        return animalToFeedTypeChoice;
     }
 
     public Choice getListChoice() {
@@ -437,6 +473,14 @@ public class MainFrame extends Frame {
 
     public TextField getItemWeightTextField() {
         return itemWeightTextField;
+    }
+
+    public TextField getIpAddressTextField() {
+        return ipAddressTextField;
+    }
+
+    public TextField getPortTextField() {
+        return portTextField;
     }
 
     public List getAnimalToKillList() {

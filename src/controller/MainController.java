@@ -1,20 +1,16 @@
 package controller;
 
-import exceptions.IllegalWeightException;
-import model.Grass;
-import model.Herbivore;
-import model.Predator;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import repository.Forest;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.FileSystems;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController {
 
@@ -31,6 +27,12 @@ public class MainController {
     public static ResourceBundle stringResources;
 
     private static Forest forest;
+
+    private static Type hashMapType = new TypeToken<HashMap<Integer, String>>() {}.getType();
+
+    private static HashMap<Integer, String> animalToKill = new HashMap<>();
+    private static HashMap<Integer, String> animalToFeed = new HashMap<>();
+    private static HashMap<Integer, String> foods = new HashMap<>();
 
     public static void startApp() throws FileNotFoundException {
         try(FileInputStream fis = new FileInputStream(CONFIGS_FILE)) {
@@ -125,169 +127,101 @@ public class MainController {
         return languageStatus;
     }
 
-    public static ArrayList<String> getFoodList(boolean isPredator) {
-        String food;
-
-        if (isPredator) {
-            food = "Herbivore ";
-        } else {
-            food = "Grass ";
-        }
-
-        ArrayList<String> foodList = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            foodList.add(food + i);
-        }
-
-        return foodList;
-    }
-
-    public static ArrayList<String> getAllAnimalsList() {
-        ArrayList<String> animalList = new ArrayList<>();
-
-        for (int i = 0; i < 12; i++) {
-            animalList.add("Animal " + i);
-        }
-
-        return animalList;
-    }
-
-    public static ArrayList<String> getAllHerbivoresList() {
-        ArrayList<String> herbivoreList = new ArrayList<>();
-
-        for (int i = 0; i < 12; i++) {
-            herbivoreList.add("Herbivore " + i);
-        }
-
-        return herbivoreList;
-    }
-
-    public static ArrayList<String> getAllPredatorsList() {
-        ArrayList<String> predatorList = new ArrayList<>();
-
-        for (int i = 0; i < 12; i++) {
-            predatorList.add("Predator " + i);
-        }
-
-        return predatorList;
-    }
-
-    public static ArrayList<String> getGrassesList() {
-        ArrayList<String> grassList = new ArrayList<>();
-
-        for (int i = 0; i < 14; i++) {
-            grassList.add("Grass " + i);
-        }
-
-        return grassList;
-    }
-
-    public static ArrayList<String> getLiveAnimalsList() {
-        ArrayList<String> animalList = new ArrayList<>();
-
-        for (int i = 0; i < 14; i++) {
-            animalList.add("Live Animal " + i);
-        }
-
-        return animalList;
-    }
-
-    public static ArrayList<String> getLiveHerbivoresList() {
-        ArrayList<String> herbivoreList = new ArrayList<>();
-
-        for (int i = 0; i < 14; i++) {
-            herbivoreList.add("Live Herbivore " + i);
-        }
-
-        return herbivoreList;
-    }
-
-    public static ArrayList<String> getLivePredatorsList() {
-        ArrayList<String> predatorList = new ArrayList<>();
-
-        for (int i = 0; i < 14; i++) {
-            predatorList.add("Live Predator " + i);
-        }
-
-        return predatorList;
-    }
-
-    public static String getAnimalById(int id) {
-        ArrayList<String> animalList = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            animalList.add("Animal " + i);
-        }
-
-        String animal = animalList.get(id);
-
-        return animal;
-    }
-
-    public static String createItem(String type, String name, float weight) {
-        String creationStatus = "Created: " + type + " " + name + " weight = " + weight;
+    public static String create(int type, String name, float weight) throws IOException {
+        String creationStatus = NetworkController
+                .request("create&" + type + "&" + name + "&" + weight);
         return creationStatus;
     }
 
-    public static String createHerbivore(String name, float weight) {
-        String creationStatus = null;
-
-        try {
-            Herbivore herbivore = new Herbivore(name, weight);
-            forest.create(herbivore);
-            creationStatus = "Created: " + herbivore.getInfo();
-        } catch (IllegalWeightException e) {
-            creationStatus = e.getMessage();
-        }
-
-        return creationStatus;
-    }
-
-    public static String createPredator(String name, float weight) {
-        String creationStatus = null;
-
-        try {
-            Predator predator = new Predator(name, weight);
-            forest.create(predator);
-            creationStatus = "Created: " + predator.getInfo();
-        } catch (IllegalWeightException e) {
-            creationStatus = e.getMessage();
-        }
-
-        return creationStatus;
-    }
-
-    public static String createGrass(String name, float weight) {
-        String creationStatus = null;
-
-        try {
-            Grass grass = new Grass(name, weight);
-            forest.create(grass);
-            creationStatus = "Created: " + grass.getInfo();
-        } catch (IllegalWeightException e) {
-            creationStatus = e.getMessage();
-        }
-
-        return creationStatus;
-    }
-
-    public static String feedAnimal(String animal, String food) {
-        String feedStatus = "Animal to feed: " + animal + "\nFood: " + food;
-        return feedStatus;
-    }
-
-    public static String killAnimal(String animal) {
-        String murderStatus = "Killed: " + animal;
+    public static String kill(int animalId) throws IOException {
+        String murderStatus = NetworkController
+                .request("kill&" + animalId);
         return murderStatus;
     }
 
-    public static ArrayList<String> getSelectedList(String list) {
-        ArrayList<String> selectedList = new ArrayList<>();
+    public static String feed(int animalId, int foodId) throws IOException {
+        String feedingStatus = NetworkController
+                .request("feed&" + animalId + "&" + foodId);
+        return feedingStatus;
+    }
 
-        for (int i = 0; i < 12; i++) {
-            selectedList.add(i + " " + list);
-        }
+    public static HashMap<Integer, String> getAllAnimals() throws IOException {
+        Gson gson = new Gson();
+        String json = NetworkController.request("get&allAnimals");
+        HashMap<Integer, String> animals = gson.fromJson(json, hashMapType);
 
-        return selectedList;
+        return animals;
+    }
+
+    public static HashMap<Integer, String> getAllHerbivores() throws IOException {
+        Gson gson = new Gson();
+        String json = NetworkController.request("get&allHerbivores");
+        HashMap<Integer, String> herbivores = gson.fromJson(json, hashMapType);
+
+        return herbivores;
+    }
+
+    public static HashMap<Integer, String> getAllPredators() throws IOException {
+        Gson gson = new Gson();
+        String json = NetworkController.request("get&allPredators");
+        HashMap<Integer, String> predators = gson.fromJson(json, hashMapType);
+
+        return predators;
+    }
+
+    public static HashMap<Integer, String> getAllGrasses() throws IOException {
+        Gson gson = new Gson();
+        String json = NetworkController.request("get&allGrasses");
+        HashMap<Integer, String> grasses = gson.fromJson(json, hashMapType);
+
+        return grasses;
+    }
+
+    public static HashMap<Integer, String> getLiveAnimals() throws IOException {
+        Gson gson = new Gson();
+        String json = NetworkController.request("get&liveAnimals");
+        HashMap<Integer, String> liveAnimals = gson.fromJson(json, hashMapType);
+
+        return liveAnimals;
+    }
+
+    public static HashMap<Integer, String> getLiveHerbivores() throws IOException {
+        Gson gson = new Gson();
+        String json = NetworkController.request("get&liveHerbivores");
+        HashMap<Integer, String> liveHerbivores = gson.fromJson(json, hashMapType);
+
+        return liveHerbivores;
+    }
+
+    public static HashMap<Integer, String> getLivePredators() throws IOException {
+        Gson gson = new Gson();
+        String json = NetworkController.request("get&livePredators");
+        HashMap<Integer, String> livePredators = gson.fromJson(json, hashMapType);
+
+        return livePredators;
+    }
+
+    public static HashMap<Integer, String> getAnimalToKillHashMap() {
+        return animalToKill;
+    }
+
+    public static void setAnimalToKillHashMap(HashMap<Integer, String> animalToKill) {
+        MainController.animalToKill = animalToKill;
+    }
+
+    public static HashMap<Integer, String> getAnimalToFeedHashMap() {
+        return animalToFeed;
+    }
+
+    public static void setAnimalToFeedHashMap(HashMap<Integer, String> animalToFeed) {
+        MainController.animalToFeed = animalToFeed;
+    }
+
+    public static HashMap<Integer, String> getFoodsHashMap() {
+        return foods;
+    }
+
+    public static void setFoodsHashMap(HashMap<Integer, String> foods) {
+        MainController.foods = foods;
     }
 }
