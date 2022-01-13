@@ -1,5 +1,6 @@
 package controller;
 
+import storage.Storage;
 import view.MainFrame;
 
 import java.awt.*;
@@ -14,12 +15,12 @@ public class FrameController {
             if (frame.getAnimalToKillTypeChoice().getSelectedIndex() == 0) {
                 return;
             } else if (frame.getAnimalToKillTypeChoice().getSelectedIndex() == 1) {
-                MainController.setAnimalToKillHashMap(MainController.getLiveHerbivores());
+                Storage.setAnimalToKill(MainController.getLiveHerbivores());
             } else if (frame.getAnimalToKillTypeChoice().getSelectedIndex() == 2) {
-                MainController.setAnimalToKillHashMap(MainController.getLivePredators());
+                Storage.setAnimalToKill(MainController.getLivePredators());
             }
 
-            for (String item : MainController.getAnimalToKillHashMap().values()) {
+            for (String item : Storage.getAnimalToKill().values()) {
                 frame.getAnimalToKillList().add(item);
             }
         } catch (IOException ex) {
@@ -36,17 +37,17 @@ public class FrameController {
             if (frame.getAnimalToFeedTypeChoice().getSelectedIndex() == 0) {
                 return;
             } else if (frame.getAnimalToFeedTypeChoice().getSelectedIndex() == 1) {
-                MainController.setAnimalToFeedHashMap(MainController.getLiveHerbivores());
-                MainController.setFoodsHashMap(MainController.getAllGrasses());
+                Storage.setAnimalToFeed(MainController.getLiveHerbivores());
+                Storage.setFoods(MainController.getAllGrasses());
             } else if (frame.getAnimalToFeedTypeChoice().getSelectedIndex() == 2) {
-                MainController.setAnimalToFeedHashMap(MainController.getLivePredators());
-                MainController.setFoodsHashMap(MainController.getLiveHerbivores());
+                Storage.setAnimalToFeed(MainController.getLivePredators());
+                Storage.setFoods(MainController.getLiveHerbivores());
             }
 
-            for (String item : MainController.getAnimalToFeedHashMap().values()) {
+            for (String item : Storage.getAnimalToFeed().values()) {
                 frame.getAnimalToFeedList().add(item);
             }
-            for (String item : MainController.getFoodsHashMap().values()) {
+            for (String item : Storage.getFoods().values()) {
                 frame.getFoodList().add(item);
             }
         } catch (IOException ex) {

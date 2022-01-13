@@ -2,6 +2,7 @@ package controller.listeners;
 
 import controller.FrameController;
 import controller.MainController;
+import storage.Storage;
 import view.MainFrame;
 
 import java.awt.*;
@@ -36,17 +37,17 @@ public class FeedAnimalButtonListener implements ActionListener {
         int animalId = -1;
         int foodId = -1;
 
-        for (Integer key : MainController.getAnimalToFeedHashMap().keySet()) {
+        for (Integer key : Storage.getAnimalToFeed().keySet()) {
             if (Objects.equals(frame.getAnimalToFeedList().getSelectedItem(),
-                    MainController.getAnimalToFeedHashMap().get(key))) {
+                    Storage.getAnimalToFeed().get(key))) {
 
                 animalId = key;
                 break;
             }
         }
-        for (Integer key : MainController.getFoodsHashMap().keySet()) {
+        for (Integer key : Storage.getFoods().keySet()) {
             if (Objects.equals(frame.getFoodList().getSelectedItem(),
-                    MainController.getFoodsHashMap().get(key))) {
+                    Storage.getFoods().get(key))) {
 
                 foodId = key;
                 break;

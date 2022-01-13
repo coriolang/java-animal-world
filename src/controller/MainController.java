@@ -1,13 +1,12 @@
 package controller;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import storage.Storage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.file.FileSystems;
 import java.util.*;
 
@@ -18,12 +17,6 @@ public class MainController {
 
     private static Properties properties;
     public static ResourceBundle stringResources;
-
-    private static Type hashMapType = new TypeToken<HashMap<Integer, String>>() {}.getType();
-
-    private static HashMap<Integer, String> animalToKill = new HashMap<>();
-    private static HashMap<Integer, String> animalToFeed = new HashMap<>();
-    private static HashMap<Integer, String> foods = new HashMap<>();
 
     public static void startApp() throws FileNotFoundException {
         try(FileInputStream fis = new FileInputStream(CONFIGS_FILE)) {
@@ -99,89 +92,62 @@ public class MainController {
 
     public static HashMap<Integer, String> getAllAnimals() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&allAnimals"
-                + "&" + properties.getProperty("LOCALE"));
-        HashMap<Integer, String> animals = gson.fromJson(json, hashMapType);
+        String json = NetworkController.request("allAnimals");
+        HashMap<Integer, String> animals = gson.fromJson(json, Storage.getHashMapType());
 
         return animals;
     }
 
     public static HashMap<Integer, String> getAllHerbivores() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&allHerbivores"
-                + "&" + properties.getProperty("LOCALE"));
-        HashMap<Integer, String> herbivores = gson.fromJson(json, hashMapType);
+        String json = NetworkController.request("allHerbivores");
+        HashMap<Integer, String> herbivores = gson.fromJson(json, Storage.getHashMapType());
 
         return herbivores;
     }
 
     public static HashMap<Integer, String> getAllPredators() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&allPredators"
-                + "&" + properties.getProperty("LOCALE"));
-        HashMap<Integer, String> predators = gson.fromJson(json, hashMapType);
+        String json = NetworkController.request("allPredators");
+        HashMap<Integer, String> predators = gson.fromJson(json, Storage.getHashMapType());
 
         return predators;
     }
 
     public static HashMap<Integer, String> getAllGrasses() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&allGrasses"
-                + "&" + properties.getProperty("LOCALE"));
-        HashMap<Integer, String> grasses = gson.fromJson(json, hashMapType);
+        String json = NetworkController.request("allGrasses");
+        HashMap<Integer, String> grasses = gson.fromJson(json, Storage.getHashMapType());
 
         return grasses;
     }
 
     public static HashMap<Integer, String> getLiveAnimals() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&liveAnimals"
-                + "&" + properties.getProperty("LOCALE"));
-        HashMap<Integer, String> liveAnimals = gson.fromJson(json, hashMapType);
+        String json = NetworkController.request("liveAnimals");
+        HashMap<Integer, String> liveAnimals = gson.fromJson(json, Storage.getHashMapType());
 
         return liveAnimals;
     }
 
     public static HashMap<Integer, String> getLiveHerbivores() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&liveHerbivores"
-                + "&" + properties.getProperty("LOCALE"));
-        HashMap<Integer, String> liveHerbivores = gson.fromJson(json, hashMapType);
+        String json = NetworkController.request("liveHerbivores");
+        HashMap<Integer, String> liveHerbivores = gson.fromJson(json, Storage.getHashMapType());
 
         return liveHerbivores;
     }
 
     public static HashMap<Integer, String> getLivePredators() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&livePredators"
-                + "&" + properties.getProperty("LOCALE"));
-        HashMap<Integer, String> livePredators = gson.fromJson(json, hashMapType);
+        String json = NetworkController.request("livePredators");
+        HashMap<Integer, String> livePredators = gson.fromJson(json, Storage.getHashMapType());
 
         return livePredators;
     }
 
-    public static HashMap<Integer, String> getAnimalToKillHashMap() {
-        return animalToKill;
-    }
-
-    public static void setAnimalToKillHashMap(HashMap<Integer, String> animalToKill) {
-        MainController.animalToKill = animalToKill;
-    }
-
-    public static HashMap<Integer, String> getAnimalToFeedHashMap() {
-        return animalToFeed;
-    }
-
-    public static void setAnimalToFeedHashMap(HashMap<Integer, String> animalToFeed) {
-        MainController.animalToFeed = animalToFeed;
-    }
-
-    public static HashMap<Integer, String> getFoodsHashMap() {
-        return foods;
-    }
-
-    public static void setFoodsHashMap(HashMap<Integer, String> foods) {
-        MainController.foods = foods;
+    public static void test() throws IOException {
+        NetworkController.request("test");
     }
 
     public static int getInterfaceMode() {

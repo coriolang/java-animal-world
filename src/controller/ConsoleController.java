@@ -1,5 +1,7 @@
 package controller;
 
+import storage.Storage;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -63,13 +65,13 @@ public class ConsoleController {
         System.out.println(MainController.stringResources.getString("SELECT_ANIMAL_TO_KILL"));
 
         try {
-            MainController.setAnimalToKillHashMap(MainController.getLiveAnimals());
+            Storage.setAnimalToKill(MainController.getLiveAnimals());
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        ConsoleController.printList(MainController.getAnimalToKillHashMap());
+        ConsoleController.printList(Storage.getAnimalToKill());
 
         int animalId = ConsoleController.getUserInputInt();
         String murderStatus = null;
@@ -86,26 +88,26 @@ public class ConsoleController {
         System.out.println(MainController.stringResources.getString("SELECT_HERB"));
 
         try {
-            MainController.setAnimalToFeedHashMap(MainController.getLiveHerbivores());
+            Storage.setAnimalToFeed(MainController.getLiveHerbivores());
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        ConsoleController.printList(MainController.getAnimalToFeedHashMap());
+        ConsoleController.printList(Storage.getAnimalToFeed());
 
         int herbivoreId = ConsoleController.getUserInputInt();
 
         System.out.println(MainController.stringResources.getString("SELECT_GRASS"));
 
         try {
-            MainController.setFoodsHashMap(MainController.getAllGrasses());
+            Storage.setFoods(MainController.getAllGrasses());
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        ConsoleController.printList(MainController.getFoodsHashMap());
+        ConsoleController.printList(Storage.getFoods());
 
         int grassId = ConsoleController.getUserInputInt();
 
@@ -123,26 +125,26 @@ public class ConsoleController {
         System.out.println(MainController.stringResources.getString("SELECT_PREDATOR"));
 
         try {
-            MainController.setAnimalToFeedHashMap(MainController.getLivePredators());
+            Storage.setAnimalToFeed(MainController.getLivePredators());
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        ConsoleController.printList(MainController.getAnimalToFeedHashMap());
+        ConsoleController.printList(Storage.getAnimalToFeed());
 
         int predatorId = ConsoleController.getUserInputInt();
 
         System.out.println(MainController.stringResources.getString("SELECT_HERB"));
 
         try {
-            MainController.setFoodsHashMap(MainController.getLiveHerbivores());
+            Storage.setFoods(MainController.getLiveHerbivores());
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        ConsoleController.printList(MainController.getFoodsHashMap());
+        ConsoleController.printList(Storage.getFoods());
 
         int herbivoreId = ConsoleController.getUserInputInt();
 

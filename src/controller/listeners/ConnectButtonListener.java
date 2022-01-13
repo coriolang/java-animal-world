@@ -40,7 +40,7 @@ public class ConnectButtonListener implements ActionListener {
         NetworkController.serverPort = port;
 
         try {
-            NetworkController.request("test");
+            MainController.test();
 
             frame.getConnectButton().setEnabled(false);
             frame.getIpAddressTextField().setEnabled(false);

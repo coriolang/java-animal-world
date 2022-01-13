@@ -40,6 +40,11 @@ public class DisconnectButtonListener implements ActionListener {
         frame.getKillAnimalButton().setEnabled(false);
         frame.getFeedAnimalButton().setEnabled(false);
 
+        frame.getAnimalToKillList().removeAll();
+        frame.getAnimalToFeedList().removeAll();
+        frame.getFoodList().removeAll();
+        frame.getCommonList().removeAll();
+
         frame.getStatusTextArea().setForeground(Color.BLACK);
         frame.getStatusTextArea().setText(MainController.stringResources.getString("SERVER_DISCONNECTED"));
     }

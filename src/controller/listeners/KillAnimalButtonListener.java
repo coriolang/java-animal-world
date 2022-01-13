@@ -2,6 +2,7 @@ package controller.listeners;
 
 import controller.FrameController;
 import controller.MainController;
+import storage.Storage;
 import view.MainFrame;
 
 import java.awt.*;
@@ -29,9 +30,9 @@ public class KillAnimalButtonListener implements ActionListener {
 
         int animalId = -1;
 
-        for (Integer key : MainController.getAnimalToKillHashMap().keySet()) {
+        for (Integer key : Storage.getAnimalToKill().keySet()) {
             if (Objects.equals(frame.getAnimalToKillList().getSelectedItem(),
-                    MainController.getAnimalToKillHashMap().get(key))) {
+                    Storage.getAnimalToKill().get(key))) {
 
                 animalId = key;
                 break;
