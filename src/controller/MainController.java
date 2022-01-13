@@ -2,7 +2,6 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import repository.Forest;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,15 +17,7 @@ public class MainController {
             .getPath("src", "resources", "configs.properties").toString();
 
     private static Properties properties;
-    public static String repositoryFile;
-
-    public static final int EMPTY_INIT_MODE = 0;
-    public static final int DEFAULT_INIT_MODE = 1;
-    public static final int FILE_INIT_MODE = 2;
-
     public static ResourceBundle stringResources;
-
-    private static Forest forest;
 
     private static Type hashMapType = new TypeToken<HashMap<Integer, String>>() {}.getType();
 
@@ -42,55 +33,13 @@ public class MainController {
             throw new FileNotFoundException();
         }
 
-        int iniType = Integer.parseInt(
-                properties.getProperty("INITIALIZATION_TYPE")
-        );
-
-        String currentOSName = System.getProperty("os.name");
-
-        if (currentOSName.contains("Windows")) {
-            repositoryFile = properties.getProperty("REPOSITORY_FILE_WINDOWS");
-        } else if (currentOSName.contains("Linux")) {
-            repositoryFile = properties.getProperty("REPOSITORY_FILE_LINUX");
-        } else if (currentOSName.contains("Mac")) {
-            repositoryFile = properties.getProperty("REPOSITORY_FILE_MACOS");
-        } else {
-            repositoryFile = FileSystems.getDefault().getPath("forest.dat").toString();
-            iniType = 1;
-            System.out.println("Operating system not defined. Default initialization.");
-        }
-
         stringResources = ResourceBundle.getBundle(
                 "resources.strings",
                 new Locale(properties.getProperty("LOCALE"))
         );
-
-        switch (iniType) {
-            case EMPTY_INIT_MODE:
-                Forest.emptyInit();
-                break;
-            case DEFAULT_INIT_MODE:
-                Forest.defaultInit();
-                break;
-            case FILE_INIT_MODE:
-                try {
-                    Forest.load(repositoryFile);
-                } catch (IOException | ClassNotFoundException e) {
-                    if (e instanceof FileNotFoundException) {
-                        System.out.println(stringResources.getString("FILE_NOT_FOUND"));
-                        Forest.defaultInit();
-                    } else {
-                        System.out.println(e.getMessage());
-                    }
-                }
-                break;
-        }
-
-        forest = Forest.getInstance();
     }
 
     public static void closeApp() throws IOException {
-        Forest.save(MainController.repositoryFile);
         System.exit(0);
     }
 
@@ -129,25 +78,29 @@ public class MainController {
 
     public static String create(int type, String name, float weight) throws IOException {
         String creationStatus = NetworkController
-                .request("create&" + type + "&" + name + "&" + weight);
+                .request("create&" + type + "&" + name + "&" + weight
+                        + "&" + properties.getProperty("LOCALE"));
         return creationStatus;
     }
 
     public static String kill(int animalId) throws IOException {
         String murderStatus = NetworkController
-                .request("kill&" + animalId);
+                .request("kill&" + animalId
+                        + "&" + properties.getProperty("LOCALE"));
         return murderStatus;
     }
 
     public static String feed(int animalId, int foodId) throws IOException {
         String feedingStatus = NetworkController
-                .request("feed&" + animalId + "&" + foodId);
+                .request("feed&" + animalId + "&" + foodId
+                        + "&" + properties.getProperty("LOCALE"));
         return feedingStatus;
     }
 
     public static HashMap<Integer, String> getAllAnimals() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&allAnimals");
+        String json = NetworkController.request("get&allAnimals"
+                + "&" + properties.getProperty("LOCALE"));
         HashMap<Integer, String> animals = gson.fromJson(json, hashMapType);
 
         return animals;
@@ -155,7 +108,8 @@ public class MainController {
 
     public static HashMap<Integer, String> getAllHerbivores() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&allHerbivores");
+        String json = NetworkController.request("get&allHerbivores"
+                + "&" + properties.getProperty("LOCALE"));
         HashMap<Integer, String> herbivores = gson.fromJson(json, hashMapType);
 
         return herbivores;
@@ -163,7 +117,8 @@ public class MainController {
 
     public static HashMap<Integer, String> getAllPredators() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&allPredators");
+        String json = NetworkController.request("get&allPredators"
+                + "&" + properties.getProperty("LOCALE"));
         HashMap<Integer, String> predators = gson.fromJson(json, hashMapType);
 
         return predators;
@@ -171,7 +126,8 @@ public class MainController {
 
     public static HashMap<Integer, String> getAllGrasses() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&allGrasses");
+        String json = NetworkController.request("get&allGrasses"
+                + "&" + properties.getProperty("LOCALE"));
         HashMap<Integer, String> grasses = gson.fromJson(json, hashMapType);
 
         return grasses;
@@ -179,7 +135,8 @@ public class MainController {
 
     public static HashMap<Integer, String> getLiveAnimals() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&liveAnimals");
+        String json = NetworkController.request("get&liveAnimals"
+                + "&" + properties.getProperty("LOCALE"));
         HashMap<Integer, String> liveAnimals = gson.fromJson(json, hashMapType);
 
         return liveAnimals;
@@ -187,7 +144,8 @@ public class MainController {
 
     public static HashMap<Integer, String> getLiveHerbivores() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&liveHerbivores");
+        String json = NetworkController.request("get&liveHerbivores"
+                + "&" + properties.getProperty("LOCALE"));
         HashMap<Integer, String> liveHerbivores = gson.fromJson(json, hashMapType);
 
         return liveHerbivores;
@@ -195,7 +153,8 @@ public class MainController {
 
     public static HashMap<Integer, String> getLivePredators() throws IOException {
         Gson gson = new Gson();
-        String json = NetworkController.request("get&livePredators");
+        String json = NetworkController.request("get&livePredators"
+                + "&" + properties.getProperty("LOCALE"));
         HashMap<Integer, String> livePredators = gson.fromJson(json, hashMapType);
 
         return livePredators;
@@ -223,5 +182,9 @@ public class MainController {
 
     public static void setFoodsHashMap(HashMap<Integer, String> foods) {
         MainController.foods = foods;
+    }
+
+    public static int getInterfaceMode() {
+        return Integer.parseInt(properties.getProperty("INTERFACE_MODE"));
     }
 }

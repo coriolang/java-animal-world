@@ -15,12 +15,12 @@ public class App {
             return;
         }
 
-        if (args.length > 0) {
-            // Console
-            MainConsole.dialog();
-        } else {
+        if (MainController.getInterfaceMode() == 1) {
             // GUI
             new MainFrame(MainController.stringResources.getString("APPLICATION_TITLE"));
+        } else {
+            // Console
+            MainConsole.dialog();
         }
     }
 }
