@@ -1,7 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class ConsoleController {
@@ -15,9 +15,14 @@ public class ConsoleController {
         System.out.println(MainController.stringResources.getString("ENTER_HERB_WEIGHT"));
         float weight = ConsoleController.getUserInputFloat();
 
-//        String creationStatus = MainController.createHerbivore(name, weight);
+        String creationStatus = null;
+        try {
+            creationStatus = MainController.create(0, name, weight);
+        } catch (IOException e) {
+            creationStatus = e.getMessage();
+        }
 
-//        System.out.println(creationStatus);
+        System.out.println(creationStatus);
     }
 
     public static void createPredator() {
@@ -27,9 +32,14 @@ public class ConsoleController {
         System.out.println(MainController.stringResources.getString("ENTER_PRED_WEIGHT"));
         float weight = ConsoleController.getUserInputFloat();
 
-//        String creationStatus = MainController.createPredator(name, weight);
+        String creationStatus = null;
+        try {
+            creationStatus = MainController.create(1, name, weight);
+        } catch (IOException e) {
+            creationStatus = e.getMessage();
+        }
 
-//        System.out.println(creationStatus);
+        System.out.println(creationStatus);
     }
 
     public static void createGrass() {
@@ -39,86 +49,118 @@ public class ConsoleController {
         System.out.println(MainController.stringResources.getString("ENTER_GRASS_WEIGHT"));
         float weight = ConsoleController.getUserInputFloat();
 
-//        String creationStatus = MainController.createGrass(name, weight);
+        String creationStatus = null;
+        try {
+            creationStatus = MainController.create(2, name, weight);
+        } catch (IOException e) {
+            creationStatus = e.getMessage();
+        }
 
-//        System.out.println(creationStatus);
+        System.out.println(creationStatus);
     }
 
     public static void killAnimal() {
         System.out.println(MainController.stringResources.getString("SELECT_ANIMAL_TO_KILL"));
 
-//        ArrayList<String> animals = MainController.getLiveAnimalsList();
+        try {
+            MainController.setAnimalToKillHashMap(MainController.getLiveAnimals());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
-//        ConsoleController.printList(animals);
+        ConsoleController.printList(MainController.getAnimalToKillHashMap());
 
         int animalId = ConsoleController.getUserInputInt();
-//        String selectedAnimal = animals.get(animalId);
-//        String murderStatus = MainController.killAnimal(selectedAnimal);
+        String murderStatus = null;
+        try {
+            murderStatus = MainController.kill(animalId);
+        } catch (IOException e) {
+            murderStatus = e.getMessage();
+        }
 
-//        System.out.println(murderStatus);
+        System.out.println(murderStatus);
     }
 
     public static void feedHerbivore() {
         System.out.println(MainController.stringResources.getString("SELECT_HERB"));
 
-//        ArrayList<String> herbivores = MainController.getLiveHerbivoresList();
-//        ConsoleController.printList(herbivores);
+        try {
+            MainController.setAnimalToFeedHashMap(MainController.getLiveHerbivores());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        ConsoleController.printList(MainController.getAnimalToFeedHashMap());
 
         int herbivoreId = ConsoleController.getUserInputInt();
-//        String selectedHerbivore = herbivores.get(herbivoreId);
 
         System.out.println(MainController.stringResources.getString("SELECT_GRASS"));
 
-//        ArrayList<String> grasses = MainController.getGrassesList();
-//        ConsoleController.printList(grasses);
+        try {
+            MainController.setFoodsHashMap(MainController.getAllGrasses());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        ConsoleController.printList(MainController.getFoodsHashMap());
 
         int grassId = ConsoleController.getUserInputInt();
-//        String selectedGrass = grasses.get(grassId);
 
-//        String feedStatus = MainController.feedAnimal(selectedHerbivore, selectedGrass);
-//        System.out.println(feedStatus);
+        String feedingStatus = null;
+        try {
+            feedingStatus = MainController.feed(herbivoreId, grassId);
+        } catch (IOException e) {
+            feedingStatus = e.getMessage();
+        }
+
+        System.out.println(feedingStatus);
     }
 
     public static void feedPredator() {
         System.out.println(MainController.stringResources.getString("SELECT_PREDATOR"));
 
-//        ArrayList<String> predators = MainController.getLivePredatorsList();
-//        ConsoleController.printList(predators);
+        try {
+            MainController.setAnimalToFeedHashMap(MainController.getLivePredators());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        ConsoleController.printList(MainController.getAnimalToFeedHashMap());
 
         int predatorId = ConsoleController.getUserInputInt();
-//        String selectedPredator = predators.get(predatorId);
 
         System.out.println(MainController.stringResources.getString("SELECT_HERB"));
 
-//        ArrayList<String> herbivores = MainController.getLiveHerbivoresList();
-//        ConsoleController.printList(herbivores);
+        try {
+            MainController.setFoodsHashMap(MainController.getLiveHerbivores());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        ConsoleController.printList(MainController.getFoodsHashMap());
 
         int herbivoreId = ConsoleController.getUserInputInt();
-//        String selectedHerbivore = herbivores.get(herbivoreId);
 
-//        String feedStatus = MainController.feedAnimal(selectedPredator, selectedHerbivore);
-//        System.out.println(feedStatus);
+        String feedingStatus = null;
+        try {
+            feedingStatus = MainController.feed(predatorId, herbivoreId);
+        } catch (IOException e) {
+            feedingStatus = e.getMessage();
+        }
+
+        System.out.println(feedingStatus);
     }
 
-    public static void printExceptionMessage(Exception e) {
-        System.out.println(e.getMessage() + "\n");
-        e.printStackTrace();
-    }
-
-    public static void printList(ArrayList<String> list) {
-        for (String element : list) {
+    public static void printList(HashMap<Integer, String> list) {
+        for (String element : list.values()) {
             System.out.println(element);
         }
         System.out.println();
-    }
-
-    public static void printSelectedAnimal() {
-        System.out.println(MainController.stringResources.getString("SELECT_ANIMAL"));
-
-        int animalId = ConsoleController.getUserInputInt();
-//        String selectedAnimal = MainController.getAnimalById(animalId);
-
-//        System.out.println(selectedAnimal);
     }
 
     public static void setLanguage(int selectedLanguage) {
@@ -140,7 +182,7 @@ public class ConsoleController {
             String tmp = in.nextLine().trim();
             input = Integer.parseInt(tmp);
         } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
-            printExceptionMessage(e);
+            System.out.println(e.getMessage());
         }
 
         return input;
@@ -157,7 +199,7 @@ public class ConsoleController {
             String tmp = in.nextLine().trim();
             input = Float.parseFloat(tmp);
         } catch (StringIndexOutOfBoundsException e) {
-            printExceptionMessage(e);
+            System.out.println(e.getMessage());
         }
 
         return input;
