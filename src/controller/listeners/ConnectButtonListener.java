@@ -47,6 +47,9 @@ public class ConnectButtonListener implements ActionListener {
             frame.getPortTextField().setEnabled(false);
             frame.getDisconnectButton().setEnabled(true);
 
+            frame.getLanguageChoice().setEnabled(false);
+            frame.getApplyConfigButton().setEnabled(false);
+
             frame.getItemTypeChoice().setEnabled(true);
             frame.getItemNameTextField().setEnabled(true);
             frame.getItemWeightTextField().setEnabled(true);
@@ -57,6 +60,10 @@ public class ConnectButtonListener implements ActionListener {
             frame.getFoodList().setEnabled(true);
             frame.getListChoice().setEnabled(true);
             frame.getCommonList().setEnabled(true);
+
+            frame.getCreateItemButton().setEnabled(true);
+            frame.getKillAnimalButton().setEnabled(true);
+            frame.getFeedAnimalButton().setEnabled(true);
 
             frame.getStatusTextArea().setForeground(Color.BLACK);
             frame.getStatusTextArea().setText(MainController.stringResources.getString("SERVER_CONNECTED"));

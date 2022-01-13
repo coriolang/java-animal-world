@@ -22,6 +22,9 @@ public class DisconnectButtonListener implements ActionListener {
         frame.getPortTextField().setEnabled(true);
         frame.getDisconnectButton().setEnabled(false);
 
+        frame.getLanguageChoice().setEnabled(true);
+        frame.getApplyConfigButton().setEnabled(true);
+
         frame.getItemTypeChoice().setEnabled(false);
         frame.getItemNameTextField().setEnabled(false);
         frame.getItemWeightTextField().setEnabled(false);
@@ -32,6 +35,10 @@ public class DisconnectButtonListener implements ActionListener {
         frame.getFoodList().setEnabled(false);
         frame.getListChoice().setEnabled(false);
         frame.getCommonList().setEnabled(false);
+
+        frame.getCreateItemButton().setEnabled(false);
+        frame.getKillAnimalButton().setEnabled(false);
+        frame.getFeedAnimalButton().setEnabled(false);
 
         frame.getStatusTextArea().setForeground(Color.BLACK);
         frame.getStatusTextArea().setText(MainController.stringResources.getString("SERVER_DISCONNECTED"));

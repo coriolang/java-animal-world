@@ -26,6 +26,9 @@ public class WindowListener extends WindowAdapter {
         frame.getPortTextField().setEnabled(true);
         frame.getDisconnectButton().setEnabled(false);
 
+        frame.getLanguageChoice().setEnabled(true);
+        frame.getApplyConfigButton().setEnabled(true);
+
         frame.getItemTypeChoice().setEnabled(false);
         frame.getItemNameTextField().setEnabled(false);
         frame.getItemWeightTextField().setEnabled(false);
@@ -36,6 +39,10 @@ public class WindowListener extends WindowAdapter {
         frame.getFoodList().setEnabled(false);
         frame.getListChoice().setEnabled(false);
         frame.getCommonList().setEnabled(false);
+
+        frame.getCreateItemButton().setEnabled(false);
+        frame.getKillAnimalButton().setEnabled(false);
+        frame.getFeedAnimalButton().setEnabled(false);
     }
 
     @Override
