@@ -3,6 +3,7 @@ package controller.listeners;
 import controller.MainController;
 import view.MainFrame;
 
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
@@ -47,6 +48,7 @@ public class ListChoiceListener implements ItemListener {
                     break;
             }
         } catch (IOException ex) {
+            frame.getStatusTextArea().setForeground(Color.RED);
             frame.getStatusTextArea().setText(ex.getMessage());
             return;
         }
@@ -55,6 +57,7 @@ public class ListChoiceListener implements ItemListener {
             frame.getCommonList().add(item);
         }
 
+        frame.getStatusTextArea().setForeground(Color.BLACK);
         frame.getStatusTextArea().setText(
                 MainController.stringResources.getString("SELECTED_LIST")
                 + " "

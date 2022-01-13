@@ -3,6 +3,7 @@ package controller.listeners;
 import controller.MainController;
 import view.MainFrame;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -21,6 +22,7 @@ public class CreateItemButtonListener implements ActionListener {
         || frame.getItemNameTextField().getText().isBlank()
         || frame.getItemNameTextField().getText().contains("&")) {
 
+            frame.getStatusTextArea().setForeground(Color.RED);
             frame.getStatusTextArea().setText(MainController.stringResources.getString("INCORRECT_NAME"));
             return;
         }
@@ -29,6 +31,7 @@ public class CreateItemButtonListener implements ActionListener {
         try {
             weight = Float.parseFloat(frame.getItemWeightTextField().getText());
         } catch (NumberFormatException ex) {
+            frame.getStatusTextArea().setForeground(Color.RED);
             frame.getStatusTextArea().setText(MainController.stringResources.getString("INCORRECT_WEIGHT"));
             return;
         }
@@ -43,6 +46,7 @@ public class CreateItemButtonListener implements ActionListener {
             creationStatus = ex.getMessage();
         }
 
+        frame.getStatusTextArea().setForeground(Color.BLACK);
         frame.getStatusTextArea().setText(creationStatus);
     }
 }

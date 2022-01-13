@@ -3,6 +3,7 @@ package controller.listeners;
 import controller.MainController;
 import view.MainFrame;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -28,6 +29,9 @@ public class ApplyConfigButtonListener implements ActionListener {
 
         frame.updateStrings();
 
+        frame.getStatusTextArea().setForeground(Color.BLACK);
         frame.getStatusTextArea().setText(languageStatus);
+
+
     }
 }

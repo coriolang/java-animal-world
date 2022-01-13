@@ -323,8 +323,6 @@ public class MainFrame extends Frame {
         foodList.setBounds(656, 206, 288, 184);
         commonList.setBounds(336, 486, 304, 200);
 
-//        updateLists();
-
         mainPanel.add(animalToKillList);
         mainPanel.add(animalToFeedList);
         mainPanel.add(foodList);
@@ -338,26 +336,6 @@ public class MainFrame extends Frame {
         statusTextArea.setEditable(false);
         mainPanel.add(statusTextArea);
     }
-
-//    private void updateLists() {
-//        animalToKillList.removeAll();
-//        animalToFeedList.removeAll();
-//        foodList.removeAll();
-//        commonList.removeAll();
-//
-//        String herbivore = "Herbivore ";
-//        String predator = "Predator ";
-//
-//        for (int i = 0; i < 12; i++) {
-//            if (i % 2 == 0) {
-//                animalToKillList.add(herbivore + i);
-//                animalToFeedList.add(herbivore + i);
-//            } else {
-//                animalToKillList.add(predator + i);
-//                animalToFeedList.add(predator + i);
-//            }
-//        }
-//    }
 
     public void updateStrings() {
         // Labels

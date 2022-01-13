@@ -2,6 +2,7 @@ package controller;
 
 import view.MainFrame;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class FrameController {
@@ -22,6 +23,7 @@ public class FrameController {
                 frame.getAnimalToKillList().add(item);
             }
         } catch (IOException ex) {
+            frame.getStatusTextArea().setForeground(Color.RED);
             frame.getStatusTextArea().setText(ex.getMessage());
         }
     }
@@ -48,6 +50,7 @@ public class FrameController {
                 frame.getFoodList().add(item);
             }
         } catch (IOException ex) {
+            frame.getStatusTextArea().setForeground(Color.RED);
             frame.getStatusTextArea().setText(ex.getMessage());
         }
     }

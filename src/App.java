@@ -1,17 +1,18 @@
 import controller.MainController;
 import view.MainConsole;
 import view.MainFrame;
+import view.MessageBox;
 
 import java.io.FileNotFoundException;
 
 public class App {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         try {
             MainController.startApp();
         } catch (FileNotFoundException e) {
-            System.out.println("File with configs not found!");
-            // Или вывести Месседж Бокс с ошибкой
+            String errorMessage = "File with configs not found!";
+            MessageBox.showError(errorMessage);
             return;
         }
 
