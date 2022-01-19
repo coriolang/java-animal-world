@@ -2,12 +2,16 @@ package view;
 
 import controller.ConsoleController;
 import controller.MainController;
+import controller.NetworkController;
 
 import java.io.IOException;
 
 public class MainConsole {
 
     public static void dialog() {
+        NetworkController.serverAddress = "localhost";
+        NetworkController.serverPort = 1356;
+
         System.out.println(MainController.stringResources.getString("HELLO_WORLD"));
 
         int selectedMenu = -1;
